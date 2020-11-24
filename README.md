@@ -1,2 +1,2 @@
 # foointernship
-clien/lvtuyen....
+clien/lvtuyen
