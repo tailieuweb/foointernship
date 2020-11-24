@@ -1,2 +1,2 @@
 # foointernship
-Branches: client/ducduy
+Branches: client/phase1-auth-ducduy
