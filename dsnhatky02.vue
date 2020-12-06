@@ -332,5 +332,15 @@ height: 56px;padding-left: 167px;
 }
 .v-data-table-header{
 background: #3333FF;
+color: white;
+}
+.v-toolbar__title{
+  padding-left: 480px;
+}
+.class{
+    background: #3366CC;
+}
+.text-start{
+    border: 1px solid #0066FF;
 }
 </style>
