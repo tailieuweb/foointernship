@@ -2,7 +2,7 @@
   <div class="container">
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="ListDiary"
       sort-by="calories"
       class="elevation-1"
       :page.sync="page"
@@ -148,7 +148,7 @@ export default {
       { text: "Nhật ký theo tuần", value: "nhatky" },
       { text: "Actions", value: "actions", sortable: false }
     ],
-    desserts: [],
+    ListDiary: [],
     editedIndex: -1,
     editedItem: {
       id: "",
@@ -192,11 +192,11 @@ export default {
       axios
         .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
         .then(response => {
-          this.desserts = response.data;
+          this.ListDiary = response.data;
         });
     },
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.ListDiary.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.editedID = this.editedItem.id;
       this.dialog = true;
@@ -204,7 +204,7 @@ export default {
 
     deleteItem(item) {
       this.dialogDelete = true;
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.ListDiary.indexOf(item);
       this.editedItem = Object.assign({}, item);
     },
 
@@ -214,7 +214,7 @@ export default {
           this.editedItem.id
       );
       {
-        this.desserts.splice(this.editedIndex, 1);
+        this.ListDiary.splice(this.editedIndex, 1);
         this.closeDelete();
       }
     },
@@ -237,7 +237,7 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.ListDiary[this.editedIndex], this.editedItem);
         axios
           .put(
             "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/" +
@@ -248,7 +248,7 @@ export default {
             console.log(error.response);
           });
       } else {
-        this.desserts.push(this.editedItem);
+        this.ListDiary.push(this.editedItem);
         axios
           .post(
             "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/",
