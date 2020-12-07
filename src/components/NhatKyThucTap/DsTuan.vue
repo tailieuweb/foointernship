@@ -8,7 +8,7 @@
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
-      @page-count="pageCount = $event"
+    
     >
       <template #item.nhatky="{ item }">
         <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
