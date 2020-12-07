@@ -1,36 +1,37 @@
 <template>
   <v-app>
     <v-main>
-
+      <User />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import User from "./components/NhatKyThucTap/User"
+import User from "./components/NhatKyThucTap/User";
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-  User
+    User
   },
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
 <style>
-.v-data-table__wrapper{
-padding-top: 5%;
+.v-data-table__wrapper {
+  padding-top: 5%;
 }
 .theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-    background-color: #ef4f4f !important;
+  background-color: #ef4f4f !important;
 }
-.v-data-table-header{
+.v-data-table-header {
   background-color: cornflowerblue;
 }
 .v-application a {
-    color: #3c3c3c !important;
+  color: #3c3c3c !important;
 }
 </style>

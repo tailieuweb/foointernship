@@ -8,8 +8,13 @@
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
-    
+      @page-count="pageCount = $event"
     >
+      <template #item.number="" >
+        <span v-for="arr in numbers" :key="arr">
+        </span>
+        {{arr.stt}}
+      </template>
       <template #item.nhatky="{ item }">
         <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
           {{ item.nhatky }}</router-link
@@ -128,6 +133,7 @@
 import axios from "axios";
 export default {
   data: () => ({
+    numbers: [],
     dialog: false,
     dialogDelete: false,
     delete: 0,
@@ -139,8 +145,9 @@ export default {
         text: "STT",
         align: "start",
 
-        value: "id"
+        value: "number"
       },
+      { text: "ID", value: "id" },
       { text: "Tiêu đề", value: "tieude" },
       { text: "Ngày bắt đầu", value: "ngaybatdau" },
       { text: "Ngày kết thúc", value: "ngayketthuc" },
@@ -151,7 +158,7 @@ export default {
     ListDiary: [],
     editedIndex: -1,
     editedItem: {
-      id: "",
+      number: "",
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
@@ -159,7 +166,7 @@ export default {
       nhatky: "See detail"
     },
     defaultItem: {
-      id: "",
+      number: "",
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
@@ -185,14 +192,27 @@ export default {
 
   created() {
     this.initialize();
+    this.fornumber();
   },
-
   methods: {
     initialize() {
       axios
         .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
         .then(response => {
           this.ListDiary = response.data;
+        });
+    },
+    fornumber() {
+      axios
+        .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
+        .then(response => {
+          for (this.num = 0; this.num < response.data.length; this.num++) {
+            this.arr = {
+              stt: this.num + 1
+            }
+            this.numbers.push(this.arr);
+          }
+          console.log(this.numbers);
         });
     },
     editItem(item) {
