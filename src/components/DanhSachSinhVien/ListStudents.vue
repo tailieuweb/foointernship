@@ -4,7 +4,7 @@
       <v-data-table
         :headers="headers"
         :items="students"
-        sort-by="calories"
+        sort-by="id"
         class="elevation-1"
         :page.sync="page"
         :items-per-page="itemsPerPage"
@@ -93,6 +93,9 @@
             </v-dialog>
           </v-toolbar>
         </template>
+        <template v-slot:[`item.numbers`] v-for="number in numbers">
+          <div :key="number">{{ number }}</div>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
@@ -126,12 +129,15 @@ export default {
     headers: [
       {
         text: "#",
+        value: "numbers",
+      },
+      {
+        text: "ID",
         value: "id",
       },
       {
         text: "Name",
         align: "start",
-        sortable: false,
         value: "name",
       },
       { text: "Class", value: "class" },
@@ -141,6 +147,7 @@ export default {
       { text: "Actions", value: "actions", sortable: false },
     ],
     students: [],
+    numbers: 0,
     editedIndex: -1,
     editedItem: {
       id: "",
@@ -184,6 +191,8 @@ export default {
     list_students() {
       this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
         this.students = response.data;
+        this.numbers = this.students.length;
+        console.log("numbers", this.numbers);
       });
       setTimeout(this.list_students, 3000);
     },
@@ -207,7 +216,7 @@ export default {
           console.log(response);
           console.log(this.editedItem.id);
         });
-    //   this.students.splice(this.editedIndex, 1);
+      this.students.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -230,15 +239,12 @@ export default {
     save() {
       let self = this;
       if (self.editedIndex > -1) {
-        // const url = `${RESOURCE_STUDENT}/${this.editedItem.id}`;
-        // console.log("id", url);
-        // this.axios.put(url, self.editItem).then(function(response) {
-        //   console.log(response);
-        //   //   if (response.status === 200) {
-        //   //     Object.assign(self.students[self.editedIndex], self.editedItem);
-        //   //   }
-        // });
-        Object.assign(self.students[self.editedIndex], self.editedItem);
+        Object.assign(this.students[this.editedIndex], this.editedItem);
+        this.axios
+          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
+          .catch((error) => {
+            console.log(error.response);
+          });
       } else {
         this.axios
           .post(`${RESOURCE_STUDENT}`, self.editedItem)
