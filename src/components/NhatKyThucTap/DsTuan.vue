@@ -10,9 +10,9 @@
       hide-default-footer
       @page-count="pageCount = $event"
     >
-      <template #item.number="" v-for="arr in numbers" >
+      <template #item.number="" v-for="arr in numbers">
         <span :key="arr"></span>
-        {{arr.stt}}
+        {{ arr.stt }}
       </template>
 
       <template #item.nhatky="{ item }">
@@ -37,15 +37,12 @@
               >
                 Tuần Mới
               </v-btn>
-              <v-btn
-                style="margin-top: 9%; margin-right: 5%; background-color: darkcyan;"
-              >
-                Export
-              </v-btn>
             </template>
             <v-card>
               <v-card-title>
-                <span class="headline" style="padding-left: 35%;">{{ formTitle }}</span>
+                <span class="headline" style="padding-left: 35%;">{{
+                  formTitle
+                }}</span>
               </v-card-title>
 
               <v-card-text>
@@ -124,6 +121,13 @@
       </template>
     </v-data-table>
 
+    <div class="export">
+      <v-btn
+        style="margin-top: 2%;margin-left: 70%; color: white;background-color: #4f9aef;"
+      >
+        Export
+      </v-btn>
+    </div>
     <div class="text-center pt-2">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </div>
@@ -209,7 +213,7 @@ export default {
           for (this.num = 0; this.num < response.data.length; this.num++) {
             this.arr = {
               stt: this.num + 1
-            }
+            };
             this.numbers.push(this.arr);
           }
         });
@@ -287,7 +291,7 @@ export default {
   padding-top: 5%;
 }
 .theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-  background-color: #ef4f4f !important;
+  background-color: #4f9aef !important;
 }
 .v-data-table-header {
   background-color: cornflowerblue;
