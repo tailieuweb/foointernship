@@ -163,7 +163,6 @@ export default {
       {
         text: "STT",
         align: "start",
-
         value: "id"
       },
       { text: "Tiêu đề", value: "tieude" },
@@ -201,7 +200,6 @@ export default {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     }
   },
-
   watch: {
     dialog(val) {
       val || this.close();
@@ -210,11 +208,9 @@ export default {
       val || this.closeDelete();
     }
   },
-
   created() {
     this.initialize();
   },
-
   methods: {
     initialize() {
       axios
@@ -230,13 +226,11 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
     deleteItem(item) {
       this.editedIndex = this.ListDiary.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       axios.delete(
         "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/chitietnhatky/" +
@@ -245,7 +239,6 @@ export default {
       this.ListDiary.splice(this.editedIndex, 1);
       this.closeDelete();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -253,7 +246,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -261,7 +253,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.ListDiary[this.editedIndex], this.editedItem);

@@ -1,16 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
-import VueRouter from 'vue-router';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueRouter from 'vue-router'
 import router from './router'
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
+
 Vue.config.productionTip = false
 
 new Vue({
