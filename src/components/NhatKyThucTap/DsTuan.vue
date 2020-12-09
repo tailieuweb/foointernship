@@ -10,11 +10,11 @@
       hide-default-footer
       @page-count="pageCount = $event"
     >
-      <template #item.number="" >
-        <span v-for="arr in numbers" :key="arr">
-        </span>
+      <template #item.number="" v-for="arr in numbers" >
+        <span :key="arr"></span>
         {{arr.stt}}
       </template>
+
       <template #item.nhatky="{ item }">
         <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
           {{ item.nhatky }}</router-link
@@ -45,7 +45,7 @@
             </template>
             <v-card>
               <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
+                <span class="headline" style="padding-left: 35%;">{{ formTitle }}</span>
               </v-card-title>
 
               <v-card-text>
@@ -177,7 +177,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "Thêm Tuần" : "Sửa Tuần";
     }
   },
 
@@ -212,7 +212,6 @@ export default {
             }
             this.numbers.push(this.arr);
           }
-          console.log(this.numbers);
         });
     },
     editItem(item) {
@@ -283,3 +282,17 @@ export default {
   }
 };
 </script>
+<style>
+.v-data-table__wrapper {
+  padding-top: 5%;
+}
+.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+  background-color: #ef4f4f !important;
+}
+.v-data-table-header {
+  background-color: cornflowerblue;
+}
+.v-application a {
+  color: #3c3c3c !important;
+}
+</style>
