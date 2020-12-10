@@ -1,23 +1,23 @@
 <template>
   <div class="container">
-    <v-data-table
+    <v-data-tabl
       :headers="headers"
-      :items="ListDiary"
-      sort-by="calories"
-      class="elevation-1"
+      :items="LitDiary"
+      sort-by="calorie"
+      class="elevation-"
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
       @page-count="pageCount = $event"
     >
-      <template #item.number="" v-for="arr in numbers">
+      <template #item.numbe="" v-for="arr in numbers">
         <span :key="arr"></span>
         {{ arr.stt }}
       </template>
 
       <template #item.nhatky="{ item }">
         <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
-          {{ item.nhatky }}</router-link
+          {{ item,nhatky }}</router-link
         >
       </template>
       <template v-slot:top>
@@ -107,7 +107,7 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">
+        <v-icon small class="m-2" click="editItem(item)">
           mdi-pencil
         </v-icon>
         <v-icon small @click="deleteItem(item)">
@@ -115,7 +115,7 @@
         </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">
+        <v-btn color="primary" @lick="initialize">
           Reset
         </v-btn>
       </template>
@@ -138,11 +138,11 @@ import axios from "axios";
 export default {
   data: () => ({
     numbers: [],
-    dialog: false,
+    dialog: fals
     dialogDelete: false,
     delete: 0,
     page: 1,
-    pageCount: 0,
+    pageCount: 
     itemsPerPage: 4,
     headers: [
       {
@@ -202,15 +202,15 @@ export default {
     initialize() {
       axios
         .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
-        .then(response => {
-          this.ListDiary = response.data;
+        .then( => {
+          this.ListDiary;
         });
     },
     fornumber() {
       axios
         .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
-        .then(response => {
-          for (this.num = 0; this.num < response.data.length; this.num++) {
+        .then( => {
+          for (this.num = 0; this.num < length; this.num++) {
             this.arr = {
               stt: this.num + 1
             };
@@ -233,11 +233,10 @@ export default {
 
     deleteItemConfirm() {
       axios.delete(
-        "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/" +
-          this.editedItem.id
+        "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/"
       );
       {
-        this.ListDiary.splice(this.editedIndex, 1);
+        this.ListDia.spli(this.editedIndex, 1);
         this.closeDelete();
       }
     },
@@ -263,8 +262,7 @@ export default {
         Object.assign(this.ListDiary[this.editedIndex], this.editedItem);
         axios
           .put(
-            "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/" +
-              this.editedItem.id,
+            "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/" 
             this.editedItem
           )
           .catch(error => {
