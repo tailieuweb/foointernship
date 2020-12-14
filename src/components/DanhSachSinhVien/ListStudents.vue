@@ -1,9 +1,34 @@
 <template>
   <v-app>
     <v-container>
+      <div class="row">
+        <div class="col-8">
+          <div class="row">
+            <div class="col-6">
+              <v-select label="Course" clearable></v-select>
+              <v-select label="Teacher" clearable></v-select>
+            </div>
+            <div class="col-6">
+              <v-select label="Class" clearable></v-select>
+              <v-select label="Company" clearable></v-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <v-text-field
+          class="mt-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </div>
+      </div>
       <v-data-table
         :headers="headers"
         :items="students"
+        :search="search"
         sort-by="id"
         class="elevation-1"
         :page.sync="page"
@@ -110,7 +135,27 @@
           </v-btn>
         </template>
       </v-data-table>
-      <v-pagination v-model="page" :length="pageCount"></v-pagination>
+      <v-pagination v-model="page" :length="pageCount" class="mb-10"></v-pagination>
+      <template>
+        <v-btn color="primary" dark class="mb-2 mr-5">
+          Submit CV
+        </v-btn>
+      </template>
+      <template>
+        <v-btn color="primary" dark class="mb-2 mr-5">
+          Create CV
+        </v-btn>
+      </template>
+      <template>
+        <v-btn color="primary" dark class="mb-2 mr-5">
+          Submit Report
+        </v-btn>
+      </template>
+      <template>
+        <v-btn color="primary" dark class="mb-2">
+          Export
+        </v-btn>
+      </template>
     </v-container>
   </v-app>
 </template>
@@ -120,12 +165,14 @@ const RESOURCE_STUDENT =
   "https://5fc9e4df3c1c22001644136d.mockapi.io/api/internship/students";
 export default {
   data: () => ({
+    search: "",
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
     dialog: false,
     dialogDelete: false,
     status: [true, false],
+    numbers: 0,
     headers: [
       {
         text: "#",
@@ -142,12 +189,13 @@ export default {
       },
       { text: "Class", value: "class" },
       { text: "Company", value: "company" },
-      { text: "Status", value: "status", sortable: true },
       { text: "Internship Diary" },
+      { text: "CV" },
+      { text: "Report" },
+      { text: "Status", value: "status", sortable: true },
       { text: "Actions", value: "actions", sortable: false },
     ],
     students: [],
-    numbers: 0,
     editedIndex: -1,
     editedItem: {
       id: "",
@@ -183,9 +231,9 @@ export default {
     this.list_students();
   },
 
-  ready() {
-    this.list_students();
-  },
+  // ready() {
+  //   this.list_students();
+  // },
 
   methods: {
     list_students() {
@@ -194,7 +242,7 @@ export default {
         this.numbers = this.students.length;
         console.log("numbers", this.numbers);
       });
-      setTimeout(this.list_students, 3000);
+      //setTimeout(this.list_students, 3000);
     },
 
     editItem(item) {
@@ -249,10 +297,6 @@ export default {
         this.axios
           .post(`${RESOURCE_STUDENT}`, self.editedItem)
           .then(function(response) {
-            // if (response.status === 201) {
-            //   self.students.push(self.editedItem);
-            //   console.log(response);
-            // }
             console.log(response);
           })
           .catch(function(error) {
