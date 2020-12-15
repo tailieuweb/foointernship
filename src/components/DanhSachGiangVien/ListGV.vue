@@ -28,7 +28,7 @@
     </div>
     <!-- header -->
   <v-app>
-    <v-container>
+    <v-container >
       <div class="top" style="text-align: center;">
         <h1>Danh Sách Giảng Viên</h1>
       </div>
@@ -48,17 +48,18 @@
         :headers="headers"
         :items="students"
         sort-by="id"
-        class="elevation-1"
+        class="elevation-1 "
         :page.sync="page"
         :items-per-page="itemsPerPage"
         hide-default-footer
         @page-count="pageCount = $event"
+    
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
+            <v-dialog v-model="dialog" max-width="500px" >
+              <template v-slot:activator="{ on, attrs }" >
                 <v-btn
                   color="primary"
                   dark
@@ -70,12 +71,12 @@
                 </v-btn>
               </template>
               <v-card>
-                <v-card-title>
+                <v-card-title >
                   <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
-                  <v-container>
+                  <v-container >
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
@@ -112,7 +113,7 @@
                   </v-container>
                 </v-card-text>
 
-                <v-card-actions>
+                <v-card-actions >
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">
                     Cancel
@@ -123,7 +124,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-dialog v-model="dialogDelete" max-width="500px" >
               <v-card>
                 <v-card-title class="headline"
                   >Are you sure you want to delete this item?</v-card-title
@@ -142,10 +143,10 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.numbers`] v-for="number in numbers">
+        <template v-slot:[`item.numbers`] v-for="number in numbers" >
           <div :key="number">{{ number }}</div>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <template v-slot:[`item.actions`]="{ item }" >
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
@@ -153,7 +154,7 @@
             mdi-delete
           </v-icon>
         </template>
-        <template v-slot:no-data>
+        <template v-slot:no-data >
           <v-btn color="primary" @click="list_students">
             Reset
           </v-btn>
@@ -337,6 +338,9 @@ export default {
 
 
 <style>
+.v-data-table-header{
+  background: #564fef;
+}
 .text-right3 h3{
   padding-top: 50px;
 }
