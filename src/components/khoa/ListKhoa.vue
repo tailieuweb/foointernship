@@ -32,7 +32,16 @@
       <div class="top" style=" text-align: center;">
         <h1>Khoa</h1>
       </div>
-      
+      <div class="col-4">
+          <v-text-field
+          class="mt-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </div>
       <v-data-table
         :headers="headers"
         :items="students"
@@ -185,7 +194,7 @@ export default {
     headers: [
       {
         text: "#",
-        value: "numbers",
+        value: "id",
       },
       {
         text: "Tên Khoa",
@@ -302,10 +311,7 @@ export default {
         this.axios
           .post(`${RESOURCE_STUDENT}`, self.editedItem)
           .then(function(response) {
-            // if (response.status === 201) {
-            //   self.students.push(self.editedItem);
-            //   console.log(response);
-            // }
+      
             console.log(response);
           })
           .catch(function(error) {
