@@ -326,6 +326,9 @@ export default {
 
 
 <style>
+.v-data-table-header{
+  background: #564fef;
+}
 .text-right3 h3{
   padding-top: 50px;
 }
