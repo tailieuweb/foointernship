@@ -2,32 +2,46 @@
   <v-app>
     <v-container>
       <div class="row">
-        <div class="col-8">
+        <div class="col-xs-12 col-sm-8">
           <div class="row">
-            <div class="col-6">
-              <v-select label="Course" clearable></v-select>
-              <v-select label="Teacher" clearable></v-select>
+            <div class="col-xs-12 col-sm-6">
+              <v-select label="Course" outlined clearable></v-select>
+              <v-select label="Teacher" outlined clearable></v-select>
             </div>
-            <div class="col-6">
-              <v-select label="Class" clearable></v-select>
-              <v-select label="Company" clearable></v-select>
+            <div class="col-xs-12 col-sm-6">
+              <v-select
+                label="Class"
+                outlined
+                clearable
+                :items="columnValueList('class')"
+                v-model="filters['class']"
+              >
+                ></v-select
+              >
+              <v-select
+                label="Company"
+                outlined
+                clearable
+                :items="columnValueList('company')"
+                v-model="filters['company']"
+              ></v-select>
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-xs-12 col-sm-4">
           <v-text-field
-          class="mt-4"
+            class="mt-3"
             v-model="search"
             append-icon="mdi-magnify"
             label="Search"
-            single-line
+            outlined
             hide-details
           ></v-text-field>
         </div>
       </div>
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="filteredStudents"
         :search="search"
         sort-by="id"
         class="elevation-1"
@@ -135,24 +149,28 @@
           </v-btn>
         </template>
       </v-data-table>
-      <v-pagination v-model="page" :length="pageCount" class="mb-10"></v-pagination>
+      <v-pagination
+        v-model="page"
+        :length="pageCount"
+        class="mb-10"
+      ></v-pagination>
       <template>
-        <v-btn color="primary" dark class="mb-2 mr-5">
+        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
           Submit CV
         </v-btn>
       </template>
       <template>
-        <v-btn color="primary" dark class="mb-2 mr-5">
+        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
           Create CV
         </v-btn>
       </template>
       <template>
-        <v-btn color="primary" dark class="mb-2 mr-5">
+        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
           Submit Report
         </v-btn>
       </template>
       <template>
-        <v-btn color="primary" dark class="mb-2">
+        <v-btn color="primary" dark class="mb-2 w-150">
           Export
         </v-btn>
       </template>
@@ -211,10 +229,21 @@ export default {
       company: "",
       status: false,
     },
+    filters: {
+      class: [],
+      company: []
+    },
   }),
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+    filteredStudents() {
+      return this.students.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
     },
   },
 
@@ -285,17 +314,16 @@ export default {
     },
 
     save() {
-      let self = this;
-      if (self.editedIndex > -1) {
+      if (this.editedIndex > -1) {
         Object.assign(this.students[this.editedIndex], this.editedItem);
         this.axios
-          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
+          .put(`${RESOURCE_STUDENT}/${this.editedItem.id}`, this.editedItem)
           .catch((error) => {
             console.log(error.response);
           });
       } else {
         this.axios
-          .post(`${RESOURCE_STUDENT}`, self.editedItem)
+          .post(`${RESOURCE_STUDENT}`, this.editedItem)
           .then(function(response) {
             console.log(response);
           })
@@ -305,6 +333,14 @@ export default {
       }
       this.close();
     },
+    columnValueList(val) {
+      return this.students.map((d) => d[val]);
+    },
   },
 };
 </script>
+<style lang="scss">
+.w-150 {
+  width: 150px;
+}
+</style>
