@@ -1,31 +1,27 @@
 <template>
+
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="550px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on"> Nộp CV </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="font-weight-black" style="margin-left: 235px;">Nộp CV</span>
+          <span class="font-weight-black">Nộp CV</span>
         </v-card-title><br>
         
         <v-card-text>
-          <p class="" style="margin-left: 10px;  color: black;" >Chọn file CV</p>
-        </v-card-text>
-        
-        
-        <!-- file input -->
-        <!-- <v-file-input accept="image/*" label="Choose file"></v-file-input> -->
-        <v-file-input
+          <p class="" style="color: rgb(68 68 68);" >Chọn file CV</p>
+          <v-file-input
           v-model="files"
           color="#1976d2"
-          counter
-          label="Choose file"
+          
+          label="File input"
           multiple
-          placeholder="Select your files"
+          placeholder="Choose file"
           prepend-icon="mdi-paperclip"
           outlined
-          :show-size="1000"
+         
         >
           <template v-slot:selection="{ index, text }">
             <v-chip
@@ -46,19 +42,28 @@
             </span>
           </template>
         </v-file-input><br>
+        </v-card-text>
+        
+        
+        <!-- file input -->
+        <!-- <v-file-input accept="image/*" label="Choose file"></v-file-input> -->
+        
         <v-card-actions>
-         
-          <v-btn depressed color="white" style="margin-left: 120px; background: rgb(235 82 82);" text @click="dialog = false">
+         <v-spacer></v-spacer>
+          <v-btn :disabled="dialog2"
+      :loading="dialog2" color="black" style=" background: #D5E8D4; width: 100px; height: 28px" text @click="dialog2 = !dialog2,dialog = false, 'loading'">
+            Nộp
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          
+          
+          <v-btn depressed color="black" style=" background: #FF0000; width: 100px; height: 28px" text @click="dialog = false">
             Hủy
           </v-btn>
           <v-spacer></v-spacer>
-
-          <v-btn :disabled="dialog2"
-      :loading="dialog2" color="white" style="margin-right: 120px; background: #1976d2;" text @click="dialog2 = !dialog2, 'loading'">
-            Nộp
-          </v-btn>
-          
         </v-card-actions>
+        <br>
         <br>
       </v-card>
     </v-dialog>
@@ -68,13 +73,13 @@
       v-model="dialog2"
       hide-overlay
       persistent
-      width="300"
+      width="250"
     >
       <v-card
-        color="primary"
+        color="#1976d2"
         dark
       >
-        <v-card-text style="text-align: center;">
+        <v-card-text style="text-align: center; color: white;">
           Uploading...
           <v-progress-linear
             indeterminate
@@ -85,10 +90,12 @@
       </v-card>
     </v-dialog>   
   </v-row>
+ 
 </template>
 
 <script>
 export default {
+  name: 'popup',
   data: () => ({
     dialog: false,
     dialog2: false,
