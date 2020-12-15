@@ -32,6 +32,17 @@
       <div class="top" style="text-align: center;">
         <h1>Danh Sách Giảng Viên</h1>
       </div>
+
+      <div class="col-4">
+          <v-text-field
+          class="mt-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </div>
       
       <v-data-table
         :headers="headers"
@@ -190,7 +201,7 @@ export default {
     headers: [
       {
         text: "#",
-        value: "numbers",
+        value: "id",
       },
       {
         text: "Name",
