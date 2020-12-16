@@ -4,7 +4,6 @@
     <v-dialog
       v-model="dialog"
       max-width="1000px"
-      
       hide-overlay
       transition="dialog-bottom-transition"
     >
@@ -50,7 +49,40 @@
       <v-container>
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <img src="/images/AVATAR.png" alt="" style="width:110%; height: 100%">
+            <image-uploader
+                      :preview="true"
+                      :className="[
+                        'fileinput',
+                        { 'fileinput--loaded': hasImage },
+                      ]"
+                      capture="environment"
+                      :debug="1"
+                      doNotResize="gif"
+                      :autoRotate="true"
+                      outputFormat="verbose"
+                      @input="setImage"
+                      
+                    >
+                      <label for="fileInput" slot="upload-label">
+                        <figure>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            
+                          >
+                            <path
+                              class="path1"
+                              d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"
+                            ></path>
+                          </svg>
+                        </figure>
+                        <span class="upload-caption">{{
+                          hasImage ? "" : "Chọn ảnh CV"
+                        }}</span>
+                      </label>
+                    </image-uploader>
           </v-col>
           <v-col cols="12" sm="6" md="6"
           >
@@ -558,7 +590,7 @@
           >
             <v-textarea
               solo
-              placeholder="Mô tả về các nhiệm vụ, trách nhiệm trong quá trình làm việc tại công ty.          Các kỹ năng bạn học hỏi được hoặc các thành tựu đạt được..."
+              placeholder="Mô tả về các nhiệm vụ, trách nhiệm trong quá trình làm việc tại công ty. Các kỹ năng bạn học hỏi được hoặc các thành tựu đạt được..."
             ></v-textarea>
           </v-col>
   
@@ -741,6 +773,9 @@
    date:null,
    checkbox: false,
    rating: 4,
+  imageData: null,
+  hasImage: false,
+  image: null,
   data() {
         return{
           dialog: false,
@@ -763,6 +798,12 @@
     save (date) {
       this.$refs.menu.save(date)
     },
+       setImage: function (output) {
+      this.hasImage = true;
+      this.image = output;
+      console.log("Info", output.info);
+      console.log("Exif", output.exif);
+    },
     }
   }
 
@@ -780,5 +821,45 @@ border: 1px solid grey;
   margin-bottom: 50px;
   
 }
-
+.imagePreviewWrapper {
+    width: 250px;
+    height: 250px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto 30px;
+    background-size: cover;
+    background-position: center center;
+}
+.base-image-input {
+  display: block;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+}
+.placeholder {
+  background: #F0F0F0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  font-size: 18px;
+  font-family: Helvetica;
+}
+.placeholder:hover {
+  background: #E0E0E0;
+}
+.file-input {
+  display: none;
+}
+#fileInput {
+  display: none;
+}
+img {
+    width: 300px;
+    height: 300px;
+}
 </style>
