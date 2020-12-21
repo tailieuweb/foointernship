@@ -2,17 +2,17 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Dangky from '../components/DangKy/SignUp.vue'
 import dstuan from '../components/NhatKyThucTap/DsTuan'
-import HeaderFooter from '../components/HeaderFooter.vue'
+import Header from '../components/Header.vue'
 Vue.use(Router)
 
 let baseRoutes = [
   {
-    path:'/',
+    path:'/header',
     name:"header",
-    component:HeaderFooter
+    component:Header
   },
   {
-    path:'/hi',
+    path:'/',
     name:"hi",
     component:Dangky
   },
