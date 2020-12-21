@@ -10,6 +10,7 @@
       <v-data-table
         :headers="headers"
         :items="desserts"
+        :search="search"
         sort-by="calories"
         class="elevation-1"
         hide-default-footer
@@ -21,21 +22,13 @@
           <v-toolbar
             flat
           >
-            <v-autocomplete
-              v-model="model"
-              :items="items"
-              :loading="isLoading"
-              :search-input.sync="search"
-              chips
-              clearable
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
               hide-details
-              hide-selected
-              item-text="name"
-              item-value="symbol"
-              label="Search for a coin..."
-              solo
-            >
-            </v-autocomplete>
+            ></v-text-field>
 
             <v-spacer></v-spacer>
             <v-dialog
@@ -81,7 +74,7 @@
                         md="12"
                       >
                         <v-text-field
-                          v-model="editedItem.calories"
+                          v-model="editedItem.codeClass"
                           label="Mã Lớp"
                         ></v-text-field>
                       </v-col>
@@ -92,7 +85,7 @@
                         md="12"
                       >
                         <v-text-field
-                          v-model="editedItem.fat"
+                          v-model="editedItem.nameTopic"
                           label="Tên Đề Tài"
                         ></v-text-field>
                       </v-col>
@@ -103,7 +96,7 @@
                         md="12"
                       >
                         <v-text-field
-                          v-model="editedItem.khoa"
+                          v-model="editedItem.course"
                           label="Khóa"
                         ></v-text-field>
                       </v-col>
@@ -114,7 +107,7 @@
                         md="12"
                       >
                         <v-text-field
-                          v-model="editedItem.namhoc"
+                          v-model="editedItem.year"
                           label="Năm Học"
                         ></v-text-field>
                       </v-col>
@@ -133,7 +126,7 @@
                         >
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              v-model="dateStart"
+                              v-model="editedItem.dateStart"
                               label="Ngày Bắt Đầu"
                               prepend-icon="mdi-calendar"
                               readonly
@@ -142,7 +135,7 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
-                            v-model="dateStart"
+                            v-model="editedItem.dateStart"
                             scrollable
                           >
                             <v-spacer></v-spacer>
@@ -177,7 +170,7 @@
                         >
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              v-model="dateEnd"
+                              v-model="editedItem.dateEnd"
                               label="Ngày Kết Thúc"
                               prepend-icon="mdi-calendar"
                               readonly
@@ -186,7 +179,7 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
-                            v-model="dateEnd"
+                            v-model="editedItem.dateEnd"
                             scrollable
                           >
                             <v-spacer></v-spacer>
@@ -215,7 +208,7 @@
                       >
                         <v-select
                           :items="magv"
-                          v-model="editedItem.magv"
+                          v-model="editedItem.codeTeacher"
                           label="Mã GVHD"
                           solo
                         ></v-select>
@@ -304,44 +297,47 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 8,
-      dateStart: new Date().toISOString().substr(0, 10),
-      dateEnd: new Date().toISOString().substr(0, 10),
       modalStart: false,
       modalEnd: false,
-      magv: ['GV01', 'GV02', 'GV03', 'GV04'],
+      magv: [],
+      search: '',
       headers: [
         {
           text: 'ID',
           align: 'start',
           sortable: false,
-          value: 'ID',
+          value: 'id',
           class: 'primary white--text' ,
         },
-        { text: 'Mã Lớp', value: 'calories', class: 'primary white--text',},
-        { text: 'Tên Đề Tài', value: 'fat', class: 'primary white--text',},
-        { text: 'Khóa', value: 'khoa', class: 'primary white--text',},
-        { text: 'Năm Học', value: 'namhoc', class: 'primary white--text',},
-        { text: 'Ngày Bắt Đầu', value: 'carbs', class: 'primary white--text',},
-        { text: 'Ngày Kết Thúc', value: 'protein', class: 'primary white--text',},
-        { text: 'Mã GVHD', value: 'magv',class: 'primary white--text',},
+        { text: 'Mã Lớp', value: 'codeClass', class: 'primary white--text',},
+        { text: 'Tên Đề Tài', value: 'nameTopic', class: 'primary white--text',},
+        { text: 'Khóa', value: 'course', class: 'primary white--text',},
+        { text: 'Năm Học', value: 'year', class: 'primary white--text',},
+        { text: 'Ngày Bắt Đầu', value: 'dateStart', class: 'primary white--text',},
+        { text: 'Ngày Kết Thúc', value: 'dateEnd', class: 'primary white--text',},
+        { text: 'Mã GVHD', value: 'codeTeacher',class: 'primary white--text',},
         { text: 'Actions', value: 'actions', sortable: false, class: 'primary white--text',},
         
       ],
       desserts: [],
       editedIndex: -1,
+      id: -1,
+      url: 'https://5fdf7b26eca1780017a30cc8.mockapi.io/api/gp/classIntership',
       editedItem: {
-        ID: '',
-        calories: '',
-        fat: '',
-        khoa: '',
-        namhoc: '',
-        magv: '',
+        id: '',
+        codeClass: '',
+        nameTopic: '',
+        course: '',
+        year: '',
+        dateStart: '',
+        dateEnd: '',
+        codeTeacher: '',
       },
       defaultItem: {
-        ID: '',
-        calories: '',
-        fat: '',
-        magv: '',
+        id: '',
+        codeClass: '',
+        nameTopic: '',
+        codeTeacher: '',
       },
     }),
     computed: {
@@ -362,121 +358,31 @@
     },
     methods: {
       initialize () {
-        this.desserts = [
-          {
-            ID: '1',
-            calories: 'NH01',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '2',
-            calories: 'NH02',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '3',
-            calories: 'NH03',
-            fat: 'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '4',
-            calories: 'NH04',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '5',
-            calories: 'NH05',
-            fat: 'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '6',
-            calories: 'NH06',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '7',
-            calories: 'NH07',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '8',
-            calories: 'NH08',
-            fat:'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '9',
-            calories: 'NH09',
-            fat: 'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-          {
-            ID: '10',
-            calories: 'NH10',
-            fat: 'Thực Tập Doanh Nghiệp',
-            khoa: '2018 - 2021',
-            namhoc: '2019 - 2020',
-            carbs: '09/09/2020',
-            protein: '12/12/2020',
-            magv: 'GV01'
-          },
-        ]
+        this.axios.get(this.url).then((response)=>{
+         this.desserts=response.data;
+         this.desserts.forEach(el=>{
+           this.magv.push(el.codeTeacher)
+         })
+        });
       },
       editItem (item) {
+        this.id = item.id
         this.editedIndex = this.desserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       deleteItem (item) {
         this.editedIndex = this.desserts.indexOf(item)
+        this.id = item.id
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
+        this.axios.delete(`${this.url}/${this.id}`).then((response)=>{
+         this.initialize()
+        });
+        
+        //this.desserts.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -495,9 +401,17 @@
       },
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+          this.axios.put(`${this.url}/${this.id}`,this.editedItem).then((response)=>{
+             //sửa
+              this.initialize()
+          });
+          //Object.assign(this.desserts[this.editedIndex], this.editedItem)
         } else {
-          this.desserts.push(this.editedItem)
+          this.axios.post(this.url,this.editedItem).then((response)=>{
+            //thêm
+             this.initialize()
+          });
+          //this.desserts.push(this.editedItem)
         }
         this.close()
       },
