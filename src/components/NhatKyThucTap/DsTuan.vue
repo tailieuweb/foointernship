@@ -2,7 +2,7 @@
   <div class="container">
     <v-data-table
       :headers="headers"
-      :items="ListDiary"
+      :items="ListDiaryWithIndex"
       sort-by="calories"
       class="elevation-1"
       :page.sync="page"
@@ -10,11 +10,6 @@
       hide-default-footer
       @page-count="pageCount = $event"
     >
-      <template #item.number="" v-for="arr in numbers">
-        <span :key="arr"></span>
-        {{ arr.stt }}
-      </template>
-
       <template #item.nhatky="{ item }">
         <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
           {{ item.nhatky }}</router-link
@@ -149,7 +144,7 @@ export default {
         text: "STT",
         align: "start",
 
-        value: "number"
+        value: "index"
       },
       { text: "ID", value: "id" },
       { text: "Tiêu đề", value: "tieude" },
@@ -160,28 +155,37 @@ export default {
       { text: "Actions", value: "actions", sortable: false }
     ],
     ListDiary: [],
+    ItemDiary: [],
     editedIndex: -1,
     editedItem: {
-      number: "",
+      number: 0,
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
       trangthai: "Not approved",
-      nhatky: "See detail"
+      nhatky: "See detail",
+      stt: ""
     },
     defaultItem: {
-      number: "",
+      number: 0,
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
       trangthai: "Not approved",
-      nhatky: "See detail"
+      nhatky: "See detail",
+      stt: ""
     }
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Thêm Tuần" : "Sửa Tuần";
+    },
+    ListDiaryWithIndex() {
+      return this.ListDiary.map((items, index) => ({
+        ...items,
+        index: index + 1
+      }));
     }
   },
 
@@ -196,7 +200,6 @@ export default {
 
   created() {
     this.initialize();
-    this.fornumber();
   },
   methods: {
     initialize() {
@@ -206,20 +209,9 @@ export default {
           this.ListDiary = response.data;
         });
     },
-    fornumber() {
-      axios
-        .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
-        .then(response => {
-          for (this.num = 0; this.num < response.data.length; this.num++) {
-            this.arr = {
-              stt: this.num + 1
-            };
-            this.numbers.push(this.arr);
-          }
-        });
-    },
+
     editItem(item) {
-      this.editedIndex = this.ListDiary.indexOf(item);
+      this.editedIndex = this.ListDiaryWithIndex.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.editedID = this.editedItem.id;
       this.dialog = true;
@@ -227,10 +219,12 @@ export default {
 
     deleteItem(item) {
       this.dialogDelete = true;
-      this.editedIndex = this.ListDiary.indexOf(item);
+      this.editedIndex = this.ListDiaryWithIndex.indexOf(item);
       this.editedItem = Object.assign({}, item);
     },
-
+    doMath: function(index) {
+      return index + 1;
+    },
     deleteItemConfirm() {
       axios.delete(
         "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/" +
@@ -271,7 +265,6 @@ export default {
             console.log(error.response);
           });
       } else {
-        this.ListDiary.push(this.editedItem);
         axios
           .post(
             "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/",
@@ -280,6 +273,7 @@ export default {
           .catch(error => {
             console.log(error.response);
           });
+         setTimeout(this.initialize, 500)
       }
       this.close();
     }
