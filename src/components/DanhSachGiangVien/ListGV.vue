@@ -1,32 +1,5 @@
 <template>
-<!-- header -->
-  <v-app>
-    <div class="user">
-      <div class="text-left">
-        <v-img
-          src="../../assets/logo1.jpg"
-          max-height="100"
-          max-width="100"
-        ></v-img>
-        <h3>Username</h3>
-      </div>
-      <div class="text-center">
-        <div class="khung">
-          <v-btn rounded color="blue" dark class="haha">Home </v-btn>
-          <v-btn class="haha">Student </v-btn>
-          <v-btn class="haha">Company </v-btn>
-        </div>
-      </div>
-      <div class="text-right">
-        <v-img
-          src="../../assets/ungvien.png"
-          max-height="100"
-          max-width="100"
-        ></v-img>
-        <h3>Username</h3>
-      </div>
-    </div>
-    <!-- header -->
+
   <v-app>
     <v-container >
       <div class="top" style="text-align: center;">
@@ -143,9 +116,7 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.numbers`] v-for="number in numbers" >
-          <div :key="number">{{ number }}</div>
-        </template>
+     
         <template v-slot:[`item.actions`]="{ item }" >
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
@@ -163,29 +134,7 @@
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </v-container>
   </v-app>
-   <!-- footer -->
-    <div class="footer">
-        <div class="text-left1">
-          <h3>Trường Cao Đẳng Công Nghệ Thủ Đức</h3>
-        </div>
-        <div class="text-center2">
-          <div class="khung1">
-            <h3>Khoa công nghệ thông tin</h3>
-          </div>
-        </div>
-        <div class="text-center3">
-          <v-img
-            src="../../assets/maytinh.jpg"
-            max-height="90"
-            max-width="90"
-          ></v-img>
-        </div>
-        <div class="text-right3">
-         <h3>Copyright (©) Team F,H,J</h3> 
-          </div>
-      </div>
-    <!-- footer -->
-  </v-app>
+  
 </template>
 
 <script>
