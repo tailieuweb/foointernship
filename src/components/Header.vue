@@ -1,6 +1,9 @@
 <template>
   <!-- header -->
   <v-app>
+    <header>
+
+    
     <div>
       <b-navbar toggleable="lg" type="dark" variant="">
         <v-img  
@@ -26,14 +29,15 @@
           <b-navbar-nav class="ml-auto"> </b-navbar-nav>
           <v-img
             src="../assets/ungvien.png"
-            max-height="100"
-            max-width="100"
+            max-height="70"
+            max-width="70"
           ></v-img>
-          <h3>Username</h3>
+          <h5>Username</h5>
         </b-collapse>
       </b-navbar>
     </div>
     <!-- header -->
+    </header>
   </v-app>
 </template>
 
@@ -49,6 +53,9 @@ export default {
 </script>
 
 <style>
+header{
+  /* position: fixed; */
+}
 .v-image.v-responsive.theme--light {
   padding-right: -16px;
   margin-right: 25px;

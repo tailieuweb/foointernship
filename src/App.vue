@@ -2,7 +2,7 @@
   <v-app>
   <!-- <User /> -->
   <Header/>
-    
+    <!-- <router-view></router-view> -->
     <Footer/>
   </v-app>
 </template>

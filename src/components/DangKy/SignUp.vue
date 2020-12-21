@@ -1,7 +1,5 @@
 <template>
- 
   <v-app>
-    
     <v-content>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
@@ -164,7 +162,7 @@ export default {
   },
 };
 </script>
-
+<!-- 
 <style>
 .text-left1 .h3 {
   padding-top: 5000px;
@@ -189,3 +187,4 @@ export default {
   background-color: #564fef !important;
 }
 </style>
+-->
