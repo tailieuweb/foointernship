@@ -17,7 +17,7 @@
         </div>
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="khoa"
         sort-by="id"
         class="elevation-1"
         :page.sync="page"
@@ -48,25 +48,27 @@
                 <v-card-text>
                   <v-container>
                     <v-row class="cot">
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.khoa"
                           label="Tên Khoa"
                         ></v-text-field>
+                        
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <hr>
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.name"
                           label="Giảng Viên"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.class"
                           label="Lớp"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.mon"
                           label="Môn"
@@ -118,7 +120,7 @@
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="list_students">
+          <v-btn color="primary" @click="list_khoa">
             Reset
           </v-btn>
         </template>
@@ -130,7 +132,7 @@
 </template>
 
 <script>
-const RESOURCE_STUDENT =
+const RESOURCE_KHOA =
   "https://5fd5d44966125e0016500945.mockapi.io/Khoa";
 export default {
   data: () => ({
@@ -155,7 +157,7 @@ export default {
       { text: "Môn Phụ Trách", value: "mon" },
       { text: "Thao Tác", value: "actions", sortable: false },
     ],
-    students: [],
+    khoa: [],
     numbers: 0,
     editedIndex: -1,
     editedItem: {
@@ -177,7 +179,7 @@ export default {
   }),
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Thêm Giảng Viên" : "Edit Item";
+      return this.editedIndex === -1 ? "Thêm Khoa" : "Edit Item";
     },
   },
 
@@ -191,43 +193,43 @@ export default {
   },
 
   created() {
-    this.list_students();
+    this.list_khoa();
   },
 
   ready() {
-    this.list_students();
+    this.list_khoa();
   },
 
   methods: {
-    list_students() {
-      this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
-        this.students = response.data;
-        this.numbers = this.students.length;
+    list_khoa() {
+      this.axios.get(`${RESOURCE_KHOA}`).then((response) => {
+        this.khoa = response.data;
+        this.numbers = this.khoa.length;
         console.log("numbers", this.numbers);
       });
-      setTimeout(this.list_students, 3000);
+      setTimeout(this.list_khoa, 3000);
     },
 
     editItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.khoa.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.khoa.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
       this.axios
-        .delete(`${RESOURCE_STUDENT}/${this.editedItem.id}`)
+        .delete(`${RESOURCE_KHOA}/${this.editedItem.id}`)
         .then((response) => {
           console.log(response);
           console.log(this.editedItem.id);
         });
-      this.students.splice(this.editedIndex, 1);
+      this.khoa.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -250,15 +252,15 @@ export default {
     save() {
       let self = this;
       if (self.editedIndex > -1) {
-        Object.assign(this.students[this.editedIndex], this.editedItem);
+        Object.assign(this.khoa[this.editedIndex], this.editedItem);
         this.axios
-          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
+          .put(RESOURCE_KHOA + "/" + this.editedItem.id, this.editedItem)
           .catch((error) => {
             console.log(error.response);
           });
       } else {
         this.axios
-          .post(`${RESOURCE_STUDENT}`, self.editedItem)
+          .post(`${RESOURCE_KHOA}`, self.editedItem)
           .then(function(response) {
       
             console.log(response);
@@ -275,6 +277,12 @@ export default {
 
 
 <style>
+.v-btn:not(.v-btn--round).v-size--default {
+    height: 36px;
+    min-width: 64px;
+    padding: 0 16px;
+    background: yellow;
+}
 .cot{
   border-radius: 50%;
 }
