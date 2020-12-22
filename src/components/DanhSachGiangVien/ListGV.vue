@@ -19,7 +19,7 @@
       
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="giangvien"
         sort-by="id"
         class="elevation-1 "
         :page.sync="page"
@@ -51,31 +51,33 @@
                 <v-card-text>
                   <v-container >
                     <v-row>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.Name"
                           label="Name"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.Tranercode"
                           label="Mã Số GV"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.Class"
                           label="Lớp"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <hr>
+                      <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.DayStart"
                           label="Ngày Bắt Đầu"
                         ></v-text-field>
                       </v-col>
-                       <v-col cols="12" sm="6" md="4">
+                       <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           v-model="editedItem.DayEnd"
                           label="Ngày Kết Thúc"
@@ -126,7 +128,7 @@
           </v-icon>
         </template>
         <template v-slot:no-data >
-          <v-btn color="primary" @click="list_students">
+          <v-btn color="primary" @click="list_giangvien">
             Reset
           </v-btn>
         </template>
@@ -138,7 +140,7 @@
 </template>
 
 <script>
-const RESOURCE_STUDENT =
+const RESOURCE_GIANGVIEN =
   "https://5fd5d44966125e0016500945.mockapi.io/GiangVien";
 export default {
   data: () => ({
@@ -164,7 +166,7 @@ export default {
       {text: "Ngày Kết Thúc", value: "DayEnd"},
       { text: "Thao Tác", value: "actions", sortable: false },
     ],
-    students: [],
+    giangvien: [],
     numbers: 0,
     editedIndex: -1,
     editedItem: {
@@ -186,7 +188,7 @@ export default {
   }),
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "Thêm Giảng Viên" : "Edit Item";
     },
   },
 
@@ -200,43 +202,43 @@ export default {
   },
 
   created() {
-    this.list_students();
+    this.list_giangvien();
   },
 
   ready() {
-    this.list_students();
+    this.list_giangvien();
   },
 
   methods: {
-    list_students() {
-      this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
-        this.students = response.data;
-        this.numbers = this.students.length;
+    list_giangvien() {
+      this.axios.get(`${RESOURCE_GIANGVIEN}`).then((response) => {
+        this.giangvien = response.data;
+        this.numbers = this.giangvien.length;
         console.log("numbers", this.numbers);
       });
-      setTimeout(this.list_students, 3000);
+      setTimeout(this.list_giangvien, 3000);
     },
 
     editItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.giangvien.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.giangvien.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
       this.axios
-        .delete(`${RESOURCE_STUDENT}/${this.editedItem.id}`)
+        .delete(`${RESOURCE_GIANGVIEN}/${this.editedItem.id}`)
         .then((response) => {
           console.log(response);
           console.log(this.editedItem.id);
         });
-      this.students.splice(this.editedIndex, 1);
+      this.giangvien.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -259,20 +261,17 @@ export default {
     save() {
       let self = this;
       if (self.editedIndex > -1) {
-        Object.assign(this.students[this.editedIndex], this.editedItem);
+        Object.assign(this.giangvien[this.editedIndex], this.editedItem);
         this.axios
-          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
+          .put(RESOURCE_GIANGVIEN + "/" + this.editedItem.id, this.editedItem)
           .catch((error) => {
             console.log(error.response);
           });
       } else {
         this.axios
-          .post(`${RESOURCE_STUDENT}`, self.editedItem)
+          .post(`${RESOURCE_GIANGVIEN}`, self.editedItem)
           .then(function(response) {
-            // if (response.status === 201) {
-            //   self.students.push(self.editedItem);
-            //   console.log(response);
-            // }
+           
             console.log(response);
           })
           .catch(function(error) {
@@ -349,6 +348,12 @@ export default {
 }
 .theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
   background-color: #564fef !important;
+}
+.v-btn:not(.v-btn--round).v-size--default {
+    height: 36px;
+    min-width: 64px;
+    padding: 0 16px;
+    background: yellow;
 }
 </style>
 
