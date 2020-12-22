@@ -1,29 +1,9 @@
 <template>
   <v-app>
     <v-container>
-      <div class="row">
-        <div class="col-4">
-          <v-btn color="grey lighten-2" class="mb-2" style="margin-top: 20px">
-            Choose file
-          </v-btn>
-        </div>
-        <div class="col-8">
-          <div class="row">
-            <div class="col-6">
-              <v-select label="Class" clearable></v-select>
-            </div>
-            <div class="col-6">
-              <v-select label="Leturer" clearable></v-select>
-            </div>
-          </div>
-        </div>
-        <v-btn color="primary" dark class="mb-10 ml-3" v-bind="attrs" v-on="on">
-          Import
-        </v-btn>
-      </div>
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="leturer"
         sort-by="id"
         class="elevation-1"
         :page.sync="page"
@@ -35,6 +15,17 @@
           <v-toolbar flat>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  ADD ITEM
+                </v-btn>
+              </template>
               <v-card>
                 <v-card-title>
                   <span class="headline">{{ formTitle }}</span>
@@ -45,8 +36,8 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.mssv"
-                          label="MSSV"
+                          v-model="editedItem.magv"
+                          label="Ma GV"
                         ></v-text-field>
                       </v-col>
 
@@ -58,38 +49,31 @@
                       </v-col>
 
                       <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.class"
-                          label="Class"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.company"
-                          label="Company"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.nguoihuongdan"
-                          label="Người hướng dẫn"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="12" sm="6" md="4">
                         <v-select
-                          v-model="editedItem.status"
-                          :items="status"
-                          label="Status"
+                          v-model="editedItem.gioitinh"
+                          :items="gioitinh"
+                          label="Gioi Tinh"
                         ></v-select>
                       </v-col>
 
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.leturer"
-                          label="Leturer"
+                          v-model="editedItem.khoa"
+                          label="Khoa"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.sdt"
+                          label="SDT"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.email"
+                          label="Email"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -138,7 +122,7 @@
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="list_students">
+          <v-btn color="primary" @click="list_leturer">
             Reset
           </v-btn>
         </template>
@@ -150,7 +134,7 @@
 
 <script>
 const RESOURCE_STUDENT =
-  "https://5fcd0eb2603c0c0016487546.mockapi.io/api/users";
+  "https://5fcd0eb2603c0c0016487546.mockapi.io/api/leturer";
 export default {
   data: () => ({
     page: 1,
@@ -158,45 +142,45 @@ export default {
     itemsPerPage: 10,
     dialog: false,
     dialogDelete: false,
-    status: [true, false],
+    gioitinh: [true, false],
     headers: [
       {
         text: "#",
         value: "id",
       },
       {
-        text: "MSSV",
-        value: "mssv",
+        text: "MSGV",
+        value: "magv",
       },
       {
         text: "Name",
         align: "start",
         value: "name",
       },
-      { text: "Class", value: "class" },
-      { text: "Leturer", value: "leturer" },
+      { text: "Gioi Tinh", value: "gioitinh", sortable: true },
+      { text: "Khoa", value: "khoa" },
+      { text: "SDT", value: "sdt" },
+      { text: "Email", value: "email" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    students: [],
+    leturer: [],
     numbers: 0,
     editedIndex: -1,
     editedItem: {
       id: "",
       name: "",
-      class: "",
-      company: "",
-      status: false,
-      nguoihuongdan: "",
-      leturer: "",
+      gioitinh: false,
+      khoa: "",
+      sdt: "",
+      email: "",
     },
     defaultItem: {
       id: "",
       name: "",
-      class: "",
-      company: "",
-      status: false,
-      nguoihuongdan: "",
-      leturer: "",
+      gioitinh: false,
+      khoa: "",
+      sdt: "",
+      email: "",
     },
   }),
   computed: {
@@ -215,31 +199,31 @@ export default {
   },
 
   created() {
-    this.list_students();
+    this.list_leturer();
   },
 
   ready() {
-    this.list_students();
+    this.list_leturer();
   },
 
   methods: {
-    list_students() {
+    list_leturer() {
       this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
-        this.students = response.data;
-        this.numbers = this.students.length;
+        this.leturer = response.data;
+        this.numbers = this.leturer.length;
         console.log("numbers", this.numbers);
       });
-      setTimeout(this.list_students, 3000);
+      setTimeout(this.list_leturer, 3000);
     },
 
     editItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.leturer.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.leturer.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
@@ -251,7 +235,7 @@ export default {
           console.log(response);
           console.log(this.editedItem.id);
         });
-      this.students.splice(this.editedIndex, 1);
+      this.leturer.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -274,7 +258,7 @@ export default {
     save() {
       let self = this;
       if (self.editedIndex > -1) {
-        Object.assign(this.students[this.editedIndex], this.editedItem);
+        Object.assign(this.leturer[this.editedIndex], this.editedItem);
         this.axios
           .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
           .catch((error) => {
@@ -285,7 +269,7 @@ export default {
           .post(`${RESOURCE_STUDENT}`, self.editedItem)
           .then(function(response) {
             // if (response.status === 201) {
-            //   self.students.push(self.editedItem);
+            //   self.leturer.push(self.editedItem);
             //   console.log(response);
             // }
             console.log(response);
