@@ -47,7 +47,7 @@
  
 		<p class="footer-company-about">
 		<span>Thông tin trang web</span>
-        Đây là trang web về quản lý thực tập
+        Đây là trang web về thực tập
 		</p>
  
 		<div class="footer-icons">
