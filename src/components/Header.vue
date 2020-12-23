@@ -2,8 +2,6 @@
   <!-- header -->
   <v-app>
     <header>
-
-    
     <div>
       <b-navbar toggleable="lg" type="dark" variant="">
         <v-img  
