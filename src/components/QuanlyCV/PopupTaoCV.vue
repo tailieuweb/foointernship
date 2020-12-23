@@ -1,6 +1,8 @@
 <template>
+
   <v-app>
-    <v-row justify="center">
+    
+    <v-row justify="left">
     <v-dialog
       v-model="dialog"
       max-width="1000px"
@@ -63,9 +65,9 @@
                       @input="setImage"
                       
                     >
-                      <label for="fileInput" slot="upload-label">
+                      <label for="fileInput" slot="upload-label" style="text-align: center; ">
                         <figure>
-                          <svg
+                          <svg 
                             xmlns="http://www.w3.org/2000/svg"
                             width="32"
                             height="32"
@@ -77,9 +79,10 @@
                               d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"
                             ></path>
                           </svg>
+                          <p>Chọn ảnh CV</p>
                         </figure>
-                        <span class="upload-caption">{{
-                          hasImage ? "" : "Chọn ảnh CV"
+                        <span class="upload-caption" >{{
+                          hasImage ? "" : ""
                         }}</span>
                       </label>
                     </image-uploader>
@@ -739,6 +742,7 @@
       <v-btn
         depressed
         color="#D5E8D4"
+       
       >
         Lưu
       </v-btn>
@@ -755,7 +759,6 @@
     </v-form>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
-
       <!-- If using vue-router -->
       <router-view></router-view>
     </v-container>
@@ -765,6 +768,7 @@
     </v-dialog>
   </v-row>
 </v-app>
+
 </template>
 
 <script>
@@ -773,15 +777,15 @@
    date:null,
    checkbox: false,
    rating: 4,
-  imageData: null,
+    imageData: null,
   hasImage: false,
   image: null,
   data() {
         return{
           dialog: false,
-        notifications: false,
-        sound: true,
-        widgets: false,
+          notifications: false,
+          sound: true,
+          widgets: false,
            items: ["Nam", "Nữ", "Khác"],
            itemschk: ["Mong muốn được chỗ làm ổn định lâu dài", "Mong muốn tìm được chỗ làm có cơ hội thăng tiến tốt", "Mong muốn tìm được chỗ làm có mức lưng tốt","Mong muốn tim được chỗ ở có cơ hội thăng tiến bản thân tốt"],
            itemschk2: ["Kỹ năng tổ chức", "Kỹ năng giao tiếp", "Kỹ năng làm việc theo nhóm", "Giải quyết vấn đề", "Kỹ năng lãnh đạo", "Kỹ năng thuyết trình", "Lập kế hoạch", "Quản lý thời gian hiệu quả","Tư duy sáng tạo","Dễ dàng thích nghi với môi trường mới"],
@@ -790,7 +794,7 @@
         
         },
          watch: {
-    menu (val) {
+        menu (val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
   },
@@ -804,10 +808,11 @@
       console.log("Info", output.info);
       console.log("Exif", output.exif);
     },
+   
     }
   }
-
 </script>
+
 <style >
 .tieude{
     text-align: center;
@@ -860,6 +865,6 @@ border: 1px solid grey;
 }
 img {
     width: 300px;
-    height: 300px;
+    height: 350px;
 }
 </style>
