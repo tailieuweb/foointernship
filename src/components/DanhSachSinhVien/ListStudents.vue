@@ -41,7 +41,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="filteredStudents"
+        :items="filteredStudentsWithIndex"
         :search="search"
         sort-by="id"
         class="elevation-1"
@@ -93,7 +93,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-select
-                          v-model="editedItem.status"
+                          v-model="selectedStatus"
                           :items="status"
                           label="Status"
                         ></v-select>
@@ -107,9 +107,7 @@
                   <v-btn color="blue darken-1" text @click="close">
                     Cancel
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="save">
-                    Save
-                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -132,21 +130,40 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.numbers`] v-for="number in numbers">
-          <div :key="number">{{ number }}</div>
+        <template v-slot:[`item.diaryDetails`]="{ item }">
+          <router-link :to="'/diaryDetails/id=' + item.id" class="link">
+            See details</router-link
+          >
+        </template>
+        <template v-slot:[`item.cv`]>
+          <a class="link" outlined href="cv.pdf" download>
+            cv.pdf
+          </a>
+          <v-icon small class="mr-2">
+            mdi-download
+          </v-icon>
+        </template>
+        <template v-slot:[`item.report`]>
+          <a class="link" outlined href="report.pdf" download>
+            report.pdf
+          </a>
+          <v-icon small class="mr-2">
+            mdi-download
+          </v-icon>
+        </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-chip :color="getColor(item.status)" dark>
+            {{ changeStatus(item) }}
+          </v-chip>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
-          <v-icon small @click="deleteItem(item)">
-            mdi-delete
-          </v-icon>
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="list_students">
-            Reset
-          </v-btn>
+          <v-btn color="primary" @click="list_students"> Reset </v-btn>
         </template>
       </v-data-table>
       <v-pagination
@@ -154,26 +171,39 @@
         :length="pageCount"
         class="mb-10"
       ></v-pagination>
-      <template>
-        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
-          Submit CV
-        </v-btn>
-      </template>
-      <template>
-        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
-          Create CV
-        </v-btn>
-      </template>
-      <template>
-        <v-btn color="primary" dark class="mb-2 mr-5 w-150">
-          Submit Report
-        </v-btn>
-      </template>
-      <template>
-        <v-btn color="primary" dark class="mb-2 w-150">
-          Export
-        </v-btn>
-      </template>
+      <div class="row">
+        <div class="col-md-4">
+          <template>
+            <v-btn color="primary" dark class="mb-2 mr-5 w-150">
+              Submit CV
+            </v-btn>
+          </template>
+          <template>
+            <v-btn color="primary" dark class="mb-2 mr-5 w-150">
+              Create CV
+            </v-btn>
+          </template>
+        </div>
+        <div class="col-md-4">
+          <template>
+            <v-btn color="primary" dark class="mb-2 mr-5 w-150">
+              Submit Report
+            </v-btn>
+          </template>
+          <template>
+            <v-btn color="primary" dark class="mb-2 mr-5 w-150">
+              Create Report
+            </v-btn>
+          </template>
+        </div>
+        <div class="col-md-4">
+          <template>
+            <v-btn color="primary" dark class="mb-2 w-150" @click="clickExport">
+              Export
+            </v-btn>
+          </template>
+        </div>
+      </div>
     </v-container>
   </v-app>
 </template>
@@ -189,12 +219,12 @@ export default {
     itemsPerPage: 10,
     dialog: false,
     dialogDelete: false,
-    status: [true, false],
-    numbers: 0,
+    status: ["Approved", "Not Approved"],
+    selectedStatus: "",
     headers: [
       {
         text: "#",
-        value: "numbers",
+        value: "index",
       },
       {
         text: "ID",
@@ -207,9 +237,9 @@ export default {
       },
       { text: "Class", value: "class" },
       { text: "Company", value: "company" },
-      { text: "Internship Diary" },
-      { text: "CV" },
-      { text: "Report" },
+      { text: "Internship Diary", value: "diaryDetails" },
+      { text: "CV", value: "cv" },
+      { text: "Report", value: "report" },
       { text: "Status", value: "status", sortable: true },
       { text: "Actions", value: "actions", sortable: false },
     ],
@@ -231,12 +261,18 @@ export default {
     },
     filters: {
       class: [],
-      company: []
+      company: [],
     },
   }),
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+    filteredStudentsWithIndex() {
+      return this.filteredStudents.map((items, index) => ({
+        ...items,
+        index: index + 1,
+      }));
     },
     filteredStudents() {
       return this.students.filter((d) => {
@@ -260,28 +296,25 @@ export default {
     this.list_students();
   },
 
-  // ready() {
-  //   this.list_students();
-  // },
-
   methods: {
     list_students() {
       this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
         this.students = response.data;
-        this.numbers = this.students.length;
-        console.log("numbers", this.numbers);
       });
-      //setTimeout(this.list_students, 3000);
+    },
+
+    changeStatus(item) {
+      return item.status === true ? "Approved" : "Not Approved";
     },
 
     editItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.filteredStudentsWithIndex.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.students.indexOf(item);
+      this.editedIndex = this.filteredStudentsWithIndex.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
@@ -314,8 +347,14 @@ export default {
     },
 
     save() {
+      if (this.selectedStatus === "Approved") {
+        this.editedItem.status = true;
+      } else {
+        this.editedItem.status = false;
+      }
+
       if (this.editedIndex > -1) {
-        Object.assign(this.students[this.editedIndex], this.editedItem);
+        Object.assign(this.filteredStudentsWithIndex[this.editedIndex], this.editedItem);
         this.axios
           .put(`${RESOURCE_STUDENT}/${this.editedItem.id}`, this.editedItem)
           .catch((error) => {
@@ -330,17 +369,22 @@ export default {
           .catch(function(error) {
             console.log(error);
           });
+        setTimeout(this.list_students, 500);
       }
       this.close();
     },
     columnValueList(val) {
       return this.students.map((d) => d[val]);
     },
+
+    getColor(status) {
+      if (status === true) return "green";
+      else return "red";
+    },
+
+    clickExport() {
+      this.$router.push("/ExportStudents");
+    },
   },
 };
 </script>
-<style lang="scss">
-.w-150 {
-  width: 150px;
-}
-</style>
