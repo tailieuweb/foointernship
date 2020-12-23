@@ -1,9 +1,7 @@
 <template>
   <!-- header -->
   <v-app>
-    <header>
-
-    
+    <header>    
     <div>
       <b-navbar toggleable="lg" type="dark" variant="">
         <v-img  

@@ -164,25 +164,6 @@ export default {
 </script>
 <!-- 
 <style>
-.text-left1 .h3 {
-  padding-top: 5000px;
-}
-.footer {
-  margin-top: 50px;
-  background: #dae8fc;
-}
-.v-image.v-responsive.theme--light {
-  padding-right: -16px;
-  margin-right: 25px;
-}
-.text-right3 {
-  padding-left: 1000px;
-  margin-top: -39px;
-}
-.text-center2 {
-  padding-left: 550px;
-  margin-top: -36px;
-}
 .theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
   background-color: #564fef !important;
 }
