@@ -64,8 +64,5 @@
     <!-- footer -->
   </v-app>
 </template>
-<style>
-  @import '../assets/css/footer.css';
-</style>
 
 
