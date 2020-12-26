@@ -131,7 +131,7 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.diaryDetails`]>
-          <router-link :to="'/diaryDetails'" class="link">
+          <router-link :to="'/diaryDetails/'" class="link">
             See details</router-link
           >
         </template>
