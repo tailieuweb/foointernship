@@ -21,7 +21,7 @@ const routes = [
   }
   ,
   {
-    path: '/diaryDetails/:id',
+    path: '/diaryDetails',
     name: 'DiaryDetails'
   }
 ]

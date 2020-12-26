@@ -130,8 +130,8 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.diaryDetails`]="{ item }">
-          <router-link :to="'/diaryDetails/id=' + item.id" class="link">
+        <template v-slot:[`item.diaryDetails`]>
+          <router-link :to="'/diaryDetails'" class="link">
             See details</router-link
           >
         </template>
@@ -354,7 +354,10 @@ export default {
       }
 
       if (this.editedIndex > -1) {
-        Object.assign(this.filteredStudentsWithIndex[this.editedIndex], this.editedItem);
+        Object.assign(
+          this.filteredStudentsWithIndex[this.editedIndex],
+          this.editedItem
+        );
         this.axios
           .put(`${RESOURCE_STUDENT}/${this.editedItem.id}`, this.editedItem)
           .catch((error) => {
