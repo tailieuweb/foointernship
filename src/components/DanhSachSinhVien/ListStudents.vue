@@ -130,8 +130,8 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.diaryDetails`]>
-          <router-link :to="'/diaryDetails/'" class="link">
+        <template v-slot:[`item.diaryDetails`]="{ item }">
+          <router-link :to="'/diaryDetails/'+ item.id" class="link">
             See details</router-link
           >
         </template>
