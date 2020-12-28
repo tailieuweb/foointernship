@@ -41,15 +41,30 @@
         </v-card>
       </v-flex>
     </v-layout>
+
+    <v-layout row wrap class="mt-2">
+      <v-card>
+        <v-card-actions>
+          <div class="form-group">
+            <div class="col-sm-9">
+              <v-btn raised class="primary" text @click="save">Lưu</v-btn>
+            </div>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-layout>
     <v-layout row wrap class="mt-2">
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :pagination.sync="pagination"
           :items="contacts"
+          :page.sync="page"
+          :items-per-page="itemsPerPage"
           hide-actions
           class="elevation-1"
           :loading="loading"
+          hide-default-footer
+          @page-count="pageCount = $event"
         >
           <v-progress-linear
             slot="progress"
@@ -74,12 +89,21 @@
               Sorry, nothing to display here :(
             </v-alert>
           </template>
+
+          <template v-slot:[`item.numbers`] v-for="number in numbers">
+            <div :key="number">{{ number }}</div>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
+            <v-icon small @click="deleteItem(item)">
+              mdi-delete
+            </v-icon>
+          </template>
         </v-data-table>
         <div class="text-xs-center pt-2">
-          <v-pagination
-            v-model="pagination.page"
-            :length="pages"
-          ></v-pagination>
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
         </div>
       </v-flex>
     </v-layout>
@@ -90,40 +114,56 @@
 </template>
 
 <script>
+const RESOURCE_STUDENT =
+  "https://5fcd0eb2603c0c0016487546.mockapi.io/api/users";
 export default {
   data() {
     return {
       contacts: [],
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 10,
       headers: [
         {
           text: "ID",
           align: "left",
           sortable: false,
           value: "ID",
+          class: "primary",
         },
         {
           text: "MSSV",
           align: "left",
           sortable: false,
           value: "MSSV",
+          class: "primary",
         },
         {
           text: "Name",
           align: "left",
           sortable: false,
           value: "Name",
+          class: "primary",
         },
         {
           text: "Class",
           align: "left",
           sortable: false,
           value: "Class",
+          class: "primary",
         },
         {
           text: "Leturer",
           align: "left",
           sortable: false,
           value: "Leturer",
+          class: "primary",
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          class: "primary",
         },
       ],
       pagination: {},
@@ -187,12 +227,12 @@ export default {
         // when the file is read it triggers the onload event above.
         reader.readAsText(file, "UTF-8");
         // Handle errors load
-        reader.onload = function () {
+        reader.onload = function() {
           let csv = reader.result;
           vm.contacts = vm.csvJSON(csv);
         };
 
-        reader.onerror = function (evt) {
+        reader.onerror = function(evt) {
           if (evt.target.error.name == "NotReadableError") {
             alert("Canno't read file !");
           }
@@ -200,6 +240,27 @@ export default {
       } else {
         alert("FileReader are not supported in this browser.");
       }
+    },
+    save() {
+      let self = this;
+      if (self.editedIndex > -1) {
+        Object.assign(this.students[this.editedIndex], this.editedItem);
+        this.axios
+          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
+          .catch((error) => {
+            console.log(error.response);
+          });
+      } else {
+        this.axios
+          .post(`${RESOURCE_STUDENT}`, self.editedItem)
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+      this.close();
     },
   },
 };
