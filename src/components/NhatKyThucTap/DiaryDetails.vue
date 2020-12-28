@@ -11,9 +11,7 @@
       @page-count="pageCount = $event"
     >
       <template #item.nhatky="{ item }">
-        <router-link :to="'/chitietnhatky/id=' + item.idchitiet">
-          {{ item.nhatky }}</router-link
-        >
+        <router-link :to="'/WeekDetails/' + item.id"> See details</router-link>
       </template>
       <template v-slot:top>
         <v-toolbar flat>
@@ -73,10 +71,10 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
+                <v-btn class="btn" style="background-color: rgb(245 226 94);" color="black"  text @click="close">
                   Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
+                <v-btn class="btn" style="background-color: rgb(245 226 94);" color="black" text @click="save">
                   Save
                 </v-btn>
               </v-card-actions>
@@ -89,10 +87,10 @@
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn class="btn" style="background-color: rgb(245 226 94);" color="black" text @click="closeDelete"
                   >Cancel</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn class="btn" style="background-color: rgb(245 226 94);" color="black" text @click="deleteItemConfirm"
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -115,13 +113,14 @@
         </v-btn>
       </template>
     </v-data-table>
-
-    <div class="export">
-      <v-btn
-        style="margin-top: 2%;margin-left: 70%; color: white;background-color: #4f9aef;"
-      >
-        Export
-      </v-btn>
+    <div class="export" style="display: none;" @click="demo">
+      <download-excel :data="ListDiaryWithIndex" :fields="json_fields" name="DanhSachTuan.xls">
+        <v-btn
+          style="margin-top: 2%;margin-left: 70%; color: white;background-color: #4f9aef;"
+        >
+          Export
+        </v-btn>
+      </download-excel>
     </div>
     <div class="text-center pt-2">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -146,7 +145,6 @@ export default {
 
         value: "index"
       },
-      { text: "ID", value: "id" },
       { text: "Tiêu đề", value: "tieude" },
       { text: "Ngày bắt đầu", value: "ngaybatdau" },
       { text: "Ngày kết thúc", value: "ngayketthuc" },
@@ -158,22 +156,27 @@ export default {
     ItemDiary: [],
     editedIndex: -1,
     editedItem: {
-      number: 0,
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
       trangthai: "Not approved",
       nhatky: "See detail",
-      stt: ""
+      idchitiet: null
     },
     defaultItem: {
-      number: 0,
       tieude: "",
       ngaybatdau: "",
       ngayketthuc: "",
       trangthai: "Not approved",
       nhatky: "See detail",
-      stt: ""
+      idchitiet: null
+    },
+    json_fields: {
+      STT: "index",
+      "Tiêu đề": "tieude",
+      "Ngày bắt đầu": "ngaybatdau",
+      "Ngày kết thúc": "ngayketthuc",
+      "Trạng thái": "trangthai"
     }
   }),
 
@@ -204,12 +207,17 @@ export default {
   methods: {
     initialize() {
       axios
-        .get("https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan/")
+        .get(
+          "https://5fc999fb3c1c220016440daf.mockapi.io/user/nhatky/dstuan?idchitiet=" +
+            this.$route.params.id
+        )
         .then(response => {
           this.ListDiary = response.data;
         });
+      this.id = this.$route.params.id;
+      this.editedItem.idchitiet = this.id;
     },
-
+    demo() {},
     editItem(item) {
       this.editedIndex = this.ListDiaryWithIndex.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -273,24 +281,10 @@ export default {
           .catch(error => {
             console.log(error.response);
           });
-         setTimeout(this.initialize, 500)
+        setTimeout(this.initialize, 500);
       }
       this.close();
     }
   }
 };
 </script>
-<style>
-.v-data-table__wrapper {
-  padding-top: 5%;
-}
-.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-  background-color: #4f9aef !important;
-}
-.v-data-table-header {
-  background-color: cornflowerblue;
-}
-.v-application a {
-  color: #3c3c3c !important;
-}
-</style>
