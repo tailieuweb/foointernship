@@ -331,11 +331,11 @@ else{
   padding-left: 197px;
   color: black !important;
   height: 56px;
-  padding-left: 167px;
+  padding-left: 0px;
 }
 .v-toolbar__title {
   font-weight: 700;
-  padding-left: 575px !important;
+  padding-left: 545px !important;
 }
 .v-application {
   text-align: center;
