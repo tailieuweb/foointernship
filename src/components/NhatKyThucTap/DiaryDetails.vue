@@ -113,7 +113,7 @@
         </v-btn>
       </template>
     </v-data-table>
-    <div class="export" style="display: none;" @click="demo">
+    <div class="export" style="/*display: none;*/" @click="demo">
       <download-excel :data="ListDiaryWithIndex" :fields="json_fields" name="DanhSachTuan.xls">
         <v-btn
           style="margin-top: 2%;margin-left: 70%; color: white;background-color: #4f9aef;"
