@@ -131,25 +131,17 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.diaryDetails`]="{ item }">
-          <router-link :to="'/diaryDetails/'+ item.id" class="link">
+          <router-link :to="'/diaryDetails/' + item.id" class="link">
             See details</router-link
           >
         </template>
         <template v-slot:[`item.cv`]>
-          <a class="link" outlined href="cv.pdf" download>
-            cv.pdf
-          </a>
-          <v-icon small class="mr-2">
-            mdi-download
-          </v-icon>
+          <a class="link" outlined href="cv.pdf" download> cv.pdf </a>
+          <v-icon small class="mr-2"> mdi-download </v-icon>
         </template>
         <template v-slot:[`item.report`]>
-          <a class="link" outlined href="report.pdf" download>
-            report.pdf
-          </a>
-          <v-icon small class="mr-2">
-            mdi-download
-          </v-icon>
+          <a class="link" outlined href="report.pdf" download> report.pdf </a>
+          <v-icon small class="mr-2"> mdi-download </v-icon>
         </template>
         <template v-slot:[`item.status`]="{ item }">
           <v-chip :color="getColor(item.status)" dark>
@@ -366,10 +358,10 @@ export default {
       } else {
         this.axios
           .post(`${RESOURCE_STUDENT}`, this.editedItem)
-          .then(function(response) {
+          .then(function (response) {
             console.log(response);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
         setTimeout(this.list_students, 500);

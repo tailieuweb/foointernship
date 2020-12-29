@@ -113,9 +113,6 @@ export default {
     },
   }),
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
     filteredStudentsWithIndex() {
       return this.filteredStudents.map((items, index) => ({
         ...items,
