@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Header from '../components/Header.vue'
+import DangKyDangnhap from '../components/DangKyDangnhap/SignUp.vue'
 Vue.use(Router)
 
 let baseRoutes = [
   {
     path:'/',
-    name:"header",
-    component:Header
+    name:"hi",
+    component:DangKyDangnhap
   }
 ]
 

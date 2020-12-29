@@ -11,7 +11,7 @@ Vue.use(BootstrapVueIcons)
 Vue.use(Vuetify);
 
 export default new Vuetify({
-    icons: {
-        iconfont: 'md' || 'fa'
-    }
+    // icons: {
+    //     iconfont: 'md' || 'fa'
+    // }
 });
