@@ -1,12 +1,15 @@
 <template>
-  <v-app>
-    <v-row justify="center">
+ <v-app>
+
+    <v-row justify="left">
+      
       <v-dialog
         v-model="dialog"
         max-width="1000px"
         hide-overlay
         transition="dialog-bottom-transition"
       >
+       
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on">
             Tạo báo cáo
@@ -31,16 +34,23 @@
             </v-btn> -->
             </v-toolbar-items>
           </v-toolbar>
-
+          
           <!-- Sizes your content based upon application components -->
           <v-main>
+
+           
             <v-form>
+
               <v-container style="padding-left: 50px; padding-right: 50px; padding-top: 55px; padding-bottom: 50px;">
+                
                 <div class="vinh">
                 <br /><br />
+                
                 <h1 style="text-align: center; font-weight: bold">
                   BÁO CÁO KẾT QUẢ THỰC TẬP
                 </h1>
+                
+                
                 <br /><br />
                 <!-- tenDN -->
                 <v-row
@@ -51,14 +61,18 @@
                   "
                 >
                   <v-col md="3">
-                    <h3 style="margin-top: 17px">Tên doanh nghiệp:</h3>
+                   
+                    <h3 style="margin-top: 17px" id="tendn1">Tên doanh nghiệp:</h3>
+                   
                   </v-col>
                   <v-col md="9">
+                    
                     <v-text-field
                       clearable
                       placeholder="Nhập vào tên  doanh nghiệp"
-                       
+                      id="tendn2"
                     ></v-text-field>
+                 
                   </v-col>
                 </v-row>
 
@@ -72,7 +86,7 @@
                     <v-text-field
                       clearable
                       placeholder="Nhập vào địa chỉ doanh nghiệp"
-                      
+                      id="diachi"
                     ></v-text-field>
                     
                   </v-col>
@@ -101,6 +115,7 @@
         v-bind="attrs"
         v-on="on"
         style="padding-right: 350px;"
+        id="ngay"
       ></v-text-field>
     </template>
     <v-date-picker
@@ -115,12 +130,24 @@
                   </v-col>
                 </v-row>
                 
-                
+                <v-row style="padding-left: 43px; padding-right: 43px">
+                  <v-col md="3">
+                    <h3 style="margin-top: 17px">Thực tập:</h3>
+                    
+                  </v-col>
+                  <v-col md="6">
+                    <v-select id="thuctap" style="margin-top: 13px"
+          :items="items"
+          label="Chọn loại thực tập"
+          dense
+          solo
+        ></v-select>
+                    
+                  </v-col>
+                </v-row>
                     
                   
-                <v-row>
-                  
-                </v-row>
+                
                 <v-row style="margin-top: 70px">
                   <table
                     style="
@@ -140,6 +167,7 @@
                             margin-top: 10px;
                           "
                           placeholder="Giảng viên hướng dẫn"
+                          id="gvhd"
                         ></v-text-field>
                       </td>
                       <td></td>
@@ -155,6 +183,7 @@
                             margin-top: 10px;
                           "
                           placeholder="Họ tên sinh viên"
+                          id="hssv"
                         ></v-text-field>
                       </td>
                       <th>MS HSSV</th>
@@ -166,6 +195,7 @@
                             margin-top: 10px;
                           "
                           placeholder="Mã số sinh viên"
+                          id="mssv"
                         ></v-text-field>
                       </td>
                     </tr>
@@ -179,6 +209,7 @@
                             margin-top: 10px;
                           "
                           placeholder="Lớp"
+                          id="lop"
                         ></v-text-field>
                       </td>
                       <th>Khóa</th>
@@ -190,6 +221,7 @@
                             margin-top: 10px;
                           "
                           placeholder="Khóa học"
+                          id="khoa"
                         ></v-text-field>
                       </td>
                     </tr>
@@ -229,6 +261,7 @@
                       auto-grow
                       rows="4"
                       row-height="80"
+                      id="loimodau"
                     ></v-textarea>
                   </v-card-text> </v-row
                 ><br /><br /><br><br>
@@ -305,6 +338,7 @@
                         
                       </label>
                     </image-uploader>
+                    
                     <br /><br /><br /><br>
                     <h4
                       style="
@@ -571,7 +605,8 @@
                     ></v-textarea>
                   </v-card-text> </v-row
                 ><br />
-
+                
+                
                 <v-row align="center">
                   <v-col class="d-flex" cols="12" sm="6">
                     <v-select
@@ -583,10 +618,12 @@
                   </v-col>
                 </v-row><br><br>
                 <v-row align="center" justify="space-around">
-                  <v-btn depressed :disabled="dialog2" color="#D5E8D4" style="width: 100px; height: 28px" @click="dialog = false,dialog2 = !dialog2"> Lưu </v-btn>
+                  
+                  <v-btn depressed :disabled="dialog2" color="#D5E8D4" style="width: 100px; height: 28px" @click="dialog = false, createPDF()"> Lưu </v-btn>
                   <v-btn depressed :disabled="dialog3" color="#FF0000" style="width: 100px; height: 28px" @click="dialog3 = !dialog3">Hủy</v-btn> 
                   </v-row
                 ><br /><br />
+                
               </v-container>
             </v-form>
             <!-- Provides the application the proper gutter -->
@@ -594,7 +631,9 @@
               <!-- If using vue-router -->
               <router-view></router-view>
             </v-container>
+            
           </v-main>
+          
         </v-card>
       </v-dialog>
       <!-- saving... -->
@@ -642,11 +681,17 @@
             OK
           </v-btn>
         </v-card-actions>
+        
       </v-card>
     </v-dialog>
+    
     </v-row>
-  </v-app>
+
+ </v-app>
 </template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
 export default {
@@ -666,6 +711,7 @@ export default {
       sound: true,
       widgets: false,
 
+      items: ['Thực tập doanh nghiệp', 'Thực tập tốt nghiệp'],
       itemsvb: ["Word", "PDF", "Web Page", "Plane Text"],
     };
   },
@@ -680,6 +726,7 @@ export default {
       },
     },
   methods: {
+   
     setImage: function (output) {
       this.hasImage = true;
       this.image = output;
@@ -689,11 +736,119 @@ export default {
     save (date) {
         this.$refs.menu.save(date)
       },
+    // exportHTML(){
+    //    html2canvas(document.getElementById('tblCustomers'), {
+    //             onrendered: function (canvas) {
+    //                 var data = canvas.toDataURL();
+    //                 var docDefinition = {
+    //                     content: [{
+    //                         image: data,
+    //                         width: 500
+    //                     }]
+    //                 };
+    //                 pdfMake.createPdf(docDefinition).download("Table.pdf");
+    //             }
+    //         });
    
-  },
-};
+
+    // }
+    createPDF(){
+    if( document.getElementById("tendn1").value == ""){
+        alert("Không được để trống");
+    }
+    else{
+
+      
+
+
+        var doc = new jsPDF();
+        
+        doc.setFontType("bold");
+        doc.setFontSize(21);
+        doc.text(55, 20, 'BAO CAO KET QUA THUC TAP');
+       
+       doc.setFontSize(16);
+       doc.setFontType("normal");
+        doc.text(20, 50, 'Ten doanh nghiep:');
+        doc.setFontType("italic");
+        doc.text(document.getElementById("tendn2").value, 90, 50);
+        doc.setFontType("normal");
+        doc.text(20, 60, 'Dia chi:');
+        doc.setFontType("italic");
+        doc.text(document.getElementById("diachi").value, 90, 60);
+        doc.setFontType("normal");
+        doc.text(20, 70, 'Ngay:');
+        doc.setFontType("italic");
+        doc.text(document.getElementById("ngay").value, 90, 70);
+        doc.setFontType("normal");
+        doc.text(20, 80, 'Thuc tap:');
+        doc.setFontType("italic");
+        doc.text(document.getElementById('thuctap').value, 90, 80);
+        
+        doc.setFontType("normal");
+        doc.text(25, 100, 'GVHD:');
+        doc.text(document.getElementById("gvhd").value, 50, 100);
+        doc.text(25, 110, 'HSSV:');
+        doc.text(document.getElementById("hssv").value, 50, 110);
+        doc.text(25, 120, 'Lop:');
+        doc.text(document.getElementById("lop").value, 50, 120);
+
+        doc.text(110, 110, 'MS HSSV:');
+        doc.text(document.getElementById("mssv").value, 145, 110);
+        doc.text(110, 120, 'Khóa:');
+        doc.text(document.getElementById("khoa").value, 145, 120);
+
+        doc.setFontSize(18);
+        doc.setFontType("bold");
+        doc.text(87, 160, 'Loi mo dau');
+        doc.setFontType("normal");
+        doc.setFontSize(15);
+        doc.text(document.getElementById("loimodau").value, 20, 170);
+        
+        doc.setFontSize(18);
+        doc.setFontType("bold");
+        doc.text(65, 250, 'Chuong 1: Noi dung thuc tap');
+        doc.setFontSize(15);
+        doc.text(20, 260, '1.1. Mo ta quy trinh thuc tap va cong viec thuc te noi dang thuc tap');
+        doc.setFontSize(15);
+        doc.text(20, 270, '1.1.1. Quy trinh thuc tap');
+
+
+       
+        doc.save("BaoCaoThucTap.pdf");
+
+
+        
+
+    }
+    }
+
+}
+//     huhu(){
+//       var doc = new jsPDF();
+// var elementHTML = $('#target').html();
+// var specialElementHandlers = {
+//     '#elementH': function (element, renderer) {
+//         return true;
+//     }
+// };
+// doc.fromHTML(elementHTML, 15, 15, {
+//     'width': 170,
+//     'elementHandlers': specialElementHandlers
+// });
+
+// // Save the PDF
+// doc.save('sample-document.pdf');
+//     }
+
+  
+}
 </script>
+
+
+
 <style >
+
 #fileInput {
   display: none;
 }
