@@ -3,7 +3,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="550px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on"> Tải lên biểu mẫu </v-btn>
+        <v-btn color="primary" dark v-bind="attrs" v-on="on"> Thêm </v-btn>
       </template>
       <v-card>
         <v-card-title>
@@ -16,6 +16,7 @@
                 
         <v-select
           :items="items2"
+          v-model="selected1"
           label="Năm học"
           dense
           outlined
@@ -24,6 +25,7 @@
             <v-col class="d-flex" cols="12" sm="6">
                 <v-select
           :items="items1"
+          v-model="selected"
           label="Học kì"
           dense
           outlined
@@ -65,7 +67,7 @@
             <v-col cols="12" sm="10">
                 <v-textarea
           outlined
-
+          v-model="note"
           placeholder="Ghi chú của Giảng viên"
         ></v-textarea>
             </v-col>
@@ -122,11 +124,14 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
  
   data: () => ({
     dialog: false,
     dialog2: false,
+    selected: undefined,
+    note: '',
     loader: null,
         loading: false,
         loading2: false,
@@ -148,8 +153,27 @@ export default {
       },
       dialog2 (val) {
         if (!val) return
-
+        axios.post("https://5fe00f0eeca1780017a31142.mockapi.io/BieuMau",{
+          namhoc: this.selected1,
+          hocki: this.selected,
+          magv: null,
+          tengv: null,
+          bieumau: this.files[0].name,
+          ghichu: this.note
+        })
+        .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
         setTimeout(() => (this.dialog2 = false), 1500)
+        this.$emit('childToParent', {
+          namhoc: this.selected1,
+          hocki: this.selected,
+          magv: null,
+          tengv: null,
+          bieumau: this.files[0].name,
+          ghichu: this.note
+        })
       },
     },
     
