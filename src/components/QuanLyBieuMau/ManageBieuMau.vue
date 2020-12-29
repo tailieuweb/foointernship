@@ -1,16 +1,7 @@
 <template>
   <v-container>
     <v-app id="inspire">
-        <Header />
-        <v-row wrap>
-          <v-col md="3">
-              <v-select label="Năm học" outlined clearable :items="namhocs"></v-select>
-              <v-select label="Giảng viên" outlined clearable :items='giangviens'></v-select>
-          </v-col>
-           <v-col md="3">
-              <v-select label="Học kì" outlined clearable :items="hockis"></v-select>
-          </v-col>
-        </v-row>
+        
       <v-card-title
         class="justify-center mb-2"
       >
@@ -18,39 +9,30 @@
         
         
       </v-card-title>
-    
+        
       <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="ListDiaryWithIndex"
         sort-by="calories"
         class="elevation-1"
         hide-default-footer
         :page.sync="page"
         @page-count="pageCount = $event"
         :items-per-page="itemsPerPage"
+        :search="search"
       >
         <template v-slot:top>
-          <v-toolbar
-            flat
-          >
-            <v-autocomplete
-              v-model="model"
-              :items="items"
-              :loading="isLoading"
-              :search-input.sync="search"
-              chips
-              clearable
-              hide-details
-              hide-selected
-              item-text="name"
-              item-value="symbol"
-              label="Search for a coin..."
-              solo
-            >
-            </v-autocomplete>
-
+          <v-toolbar flat>
+            <v-text-field
+                class="mt-3"
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+            ></v-text-field>
             <v-spacer></v-spacer>
-            <PopupBM />
+            <PopupBM v-on:childToParent="onChildClick" @changeUsername="save1" />
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
                 <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -100,30 +82,26 @@
 </template>
 
 <script>
-import Header from './Header'
 import PopupBM from './PopupBM'
+import axios from "axios";
   export default {
-      components: { Header, PopupBM },
+      components: { PopupBM },
     data: () => ({
-        namhocs: ['2020-2021', '2019-2020', '2018-2019', '2017-2018'],
-        hockis: ['Học Kì I', 'Học Kì II', 'Học Kì hè'],
-        giangviens: [ 'Phan Thanh Nhuần', 'Nguyễn Huy Hoàng', 'Lê Minh Thịnh'],
       dialog: false,
       dialogDelete: false,
       page: 1,
+      search: '',
       pageCount: 0,
       itemsPerPage: 8,
-      dateStart: new Date().toISOString().substr(0, 10),
-      dateEnd: new Date().toISOString().substr(0, 10),
       modalStart: false,
       modalEnd: false,
       status: ['Approved', 'Not Approved'],
       headers: [
         {
-          text: '#',
+          text: 'STT',
           align: 'start',
           sortable: false,
-          value: 'stt',
+          value: 'index',
           class: 'primary white--text' ,
         },
         { text: 'Năm học', value: 'namhoc', class: 'primary white--text',},
@@ -154,9 +132,12 @@ import PopupBM from './PopupBM'
       },
     }),
     computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'Thêm Biểu Mẫu' : 'Sửa Biểu Mẫu'
-      },
+      ListDiaryWithIndex() {
+      return this.desserts.map((items, index) => ({
+        ...items,
+        index: index + 1
+      }));
+    }
     },
     watch: {
       dialog (val) {
@@ -170,70 +151,39 @@ import PopupBM from './PopupBM'
       this.initialize()
     },
     methods: {
-      initialize () {
-        this.desserts = [
-          {
-            stt: '1',
-            namhoc: '2020-2021',
-            hocki:'Học kì I',
-            magv: 'GV001',
-            tengv: 'Phan Thanh Nhuần',
-            bieumau: 'CV.pdf',
-            ghichu: 'See details'
-          },
-          {
-            stt: '2',
-            namhoc: '2020-2021',
-            hocki:'Học kì I',
-            magv: 'GV001',
-            tengv: 'Phan Thanh Nhuần',
-            bieumau: 'BC.pdf',
-            ghichu: 'See details'
-          },
-          {
-            stt: '3',
-            namhoc: '2020-2021',
-            hocki:'Học kì I',
-            magv: 'GV001',
-            tengv: 'Phan Thanh Nhuần',
-            bieumau: 'CV.pdf',
-            ghichu: 'See details'
-          },
-          {
-            stt: '4',
-            namhoc: '2020-2021',
-            hocki:'Học kì I',
-            magv: 'GV001',
-            tengv: 'Phan Thanh Nhuần',
-            bieumau: 'CV.pdf',
-            ghichu: 'See details'
-          },
-          {
-            stt: '5',
-            namhoc: '2020-2021',
-            hocki:'Học kì I',
-            magv: 'GV001',
-            tengv: 'Phan Thanh Nhuần',
-            bieumau: 'CV.pdf',
-            ghichu: 'See details'
-          },
-         
-        ]
-      },
+      initialize() {
+      axios
+        .get("https://5fe00f0eeca1780017a31142.mockapi.io/BieuMau")
+        .then(response => {
+          this.desserts = response.data;
+        });
+    },
       editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+          this.id = item.id
+          
+        PopupBM.dialog = true
+        
       },
       deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.ListDiaryWithIndex.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
+       doMath: function(index) {
+      return index + 1;
+    },
       deleteItemConfirm () {
+        {
+          axios.delete("https://5fe00f0eeca1780017a31142.mockapi.io/BieuMau"+"/"+ this.editedItem.id)
+        .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+        }
+        console.log(this.editedItem.id)
         this.desserts.splice(this.editedIndex, 1)
         this.closeDelete()
-      },
+        },
       close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -248,6 +198,12 @@ import PopupBM from './PopupBM'
           this.editedIndex = -1
         })
       },
+      onChildClick (value) {
+      this.editedItem = value
+      console.log(this.editedItem)
+      this.desserts.push(value)
+      location.reload()
+    },
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.desserts[this.editedIndex], this.editedItem)
