@@ -335,7 +335,7 @@ else{
 }
 .v-toolbar__title {
   font-weight: 700;
-  padding-left: 545px !important;
+  padding-left: 38% !important;
 }
 .v-application {
   text-align: center;
