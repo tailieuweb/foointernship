@@ -743,7 +743,7 @@
       <v-btn
         depressed
         color="#D5E8D4"
-      @click="downloadWithCSS"
+      @click="download"
       >
         Lưu
       </v-btn>
@@ -806,7 +806,6 @@
 
 <script>
 import jsPDF from 'jspdf' 
-import html2canvas from "html2canvas"
   export default {
    name:'header',
    date:null,
@@ -844,16 +843,12 @@ import html2canvas from "html2canvas"
       console.log("Info", output.info);
       console.log("Exif", output.exif);
     },
-        downloadWithCSS() {
-      const doc = new jsPDF();
-      /** WITH CSS */
-      var canvasElement = document.createElement('canvas');
-      html2canvas(this.$refs.content, { canvas: canvasElement }).then(function (canvas) {
-        const img = canvas.toDataURL("image/jpeg", 0.8);
-        doc.addImage(img,'JPEG',500,500);
-        doc.save("sample.pdf");
-      });
-    },   
+      download() {
+    let pdfName = 'CV'; 
+    var doc = new jsPDF();
+    doc.text("Create CV", 10, 10);
+    doc.save(pdfName + '.pdf');
+      },
     }
   }
 </script>
