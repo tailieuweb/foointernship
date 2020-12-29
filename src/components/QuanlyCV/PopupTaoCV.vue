@@ -47,6 +47,7 @@
 
   <!-- Sizes your content based upon application components -->
   <v-main>
+      <div ref="content">
      <v-form>
       <v-container>
         <v-row>
@@ -742,14 +743,14 @@
       <v-btn
         depressed
         color="#D5E8D4"
-       
+      @click="downloadWithCSS"
       >
         Lưu
       </v-btn>
       <v-btn
         depressed
         color="#FF0000"
-        @click="dialog = false"
+        @click="dialog3 = !dialog3"
       >
         Hủy
       </v-btn>
@@ -762,9 +763,41 @@
       <!-- If using vue-router -->
       <router-view></router-view>
     </v-container>
+      </div>
   </v-main>
       </v-card>
       
+    </v-dialog>
+    <v-dialog
+      v-model="dialog3"
+      persistent
+      max-width="290"
+    >
+      
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Thông báo
+        </v-card-title>
+        <v-card-text class="font-weight-regular">Báo cáo vẫn chưa được lưu. Bạn có muốn thoát?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="#1976d2"
+            text
+            @click="dialog3 = false"
+          >
+            Hủy
+          </v-btn>
+          <v-btn
+            color="#1976d2"
+            text
+            @click="dialog3 = false,dialog = false"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+        
+      </v-card>
     </v-dialog>
   </v-row>
 </v-app>
@@ -772,6 +805,8 @@
 </template>
 
 <script>
+import jsPDF from 'jspdf' 
+import html2canvas from "html2canvas"
   export default {
    name:'header',
    date:null,
@@ -783,6 +818,7 @@
   data() {
         return{
           dialog: false,
+          dialog3: false,
           notifications: false,
           sound: true,
           widgets: false,
@@ -808,7 +844,16 @@
       console.log("Info", output.info);
       console.log("Exif", output.exif);
     },
-   
+        downloadWithCSS() {
+      const doc = new jsPDF();
+      /** WITH CSS */
+      var canvasElement = document.createElement('canvas');
+      html2canvas(this.$refs.content, { canvas: canvasElement }).then(function (canvas) {
+        const img = canvas.toDataURL("image/jpeg", 0.8);
+        doc.addImage(img,'JPEG',500,500);
+        doc.save("sample.pdf");
+      });
+    },   
     }
   }
 </script>
