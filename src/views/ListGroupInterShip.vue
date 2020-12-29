@@ -22,13 +22,33 @@
           <v-toolbar
             flat
           >
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
+
+            <v-col
+            md="5"
+            sm="5">
+             <v-card>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+                class="pa-3"
+              ></v-text-field>
+             </v-card>
+            </v-col>
+
+            <v-col
+            md="2"
+            sm="2">
+              <v-select
+                :items="magv"
+                v-model="search"
+                label="Mã GVHD"
+                solo
+                class="mt-6"
+              ></v-select>
+            </v-col>
 
             <v-spacer></v-spacer>
             <v-dialog

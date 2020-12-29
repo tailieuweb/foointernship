@@ -1,6 +1,5 @@
 <template>
   <!-- header -->
-  <v-app>
     <header>
     <div>
       <b-navbar toggleable="lg" type="dark" variant="">
@@ -36,7 +35,6 @@
     </div>
     <!-- header -->
     </header>
-  </v-app>
 </template>
 
 <script>

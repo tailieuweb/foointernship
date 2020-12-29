@@ -1,7 +1,6 @@
  <template>
-  <v-app>
     <!-- footer -->
-   <footer class="footer-distributed">
+   <footer class="footer-distributed position-relative">
  
 		<div class="footer-left">
  
@@ -62,7 +61,6 @@
 		</div>
 		</footer>
     <!-- footer -->
-  </v-app>
 </template>
 <style>
   @import '../assets/css/footer.css';
