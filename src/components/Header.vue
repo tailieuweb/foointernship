@@ -1,7 +1,6 @@
 <template>
   <!-- header -->
-  <v-app>
-    <header>
+    <header>    
     <div>
       <b-navbar toggleable="lg" type="dark" variant="">
         <v-img  
@@ -14,13 +13,13 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item-dropdown text="Student" right>
-              <b-dropdown-item href="#">Studen1</b-dropdown-item>
-              <b-dropdown-item href="#">Studen2</b-dropdown-item>
-              <b-dropdown-item href="#">Studen3</b-dropdown-item>
-              <b-dropdown-item href="#">Studen4</b-dropdown-item>
+            <b-nav-item-dropdown text="Sinh viên" right>
+              <b-dropdown-item href="#">Sinh viên</b-dropdown-item>
+              <b-dropdown-item href="#">Giảng viên</b-dropdown-item>
+              <b-dropdown-item href="#">Người hướng dẫn</b-dropdown-item>
+              <b-dropdown-item href="#">Khách</b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item href="#" color="blue">Company</b-nav-item>
+            <b-nav-item href="#" color="blue">Công ty</b-nav-item>
             <b-nav-item href="#" disabled>Disabled</b-nav-item>
           </b-navbar-nav>
           <!-- Right aligned nav items -->
@@ -36,26 +35,5 @@
     </div>
     <!-- header -->
     </header>
-  </v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    step: 1,
-  }),
-  props: {
-    source: String,
-  },
-};
-</script>
-
-<style>
-header{
-  /* position: fixed; */
-}
-.v-image.v-responsive.theme--light {
-  padding-right: -16px;
-  margin-right: 25px;
-}
-</style>
