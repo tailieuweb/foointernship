@@ -1,22 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ListKhoa from '../components/khoa/ListKhoa'
-import VueAxios from 'vue-axios';
-import axios from 'axios';
-Vue.use(VueAxios,axios);
-
 Vue.use(Router)
 
-const routes = [
-  {
-    path: '/',
-    name: 'ListKhoa',
-    component: ListKhoa
-  },
+let baseRoutes = [
+ 
 ]
 
 const router = new Router({
-  routes
+  mode: 'history',
+  linkExactActiveClass: 'active',
+  base: process.env.BASE_URL,
+  routes: baseRoutes
 })
 
 export default router
