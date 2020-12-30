@@ -645,7 +645,7 @@
                     >
                       Lưu
                     </v-btn>
-                    <v-btn depressed color="#FF0000" @click="dialog = false">
+                    <v-btn depressed color="#FF0000" @click="(dialog3 = true)">
                       Hủy
                     </v-btn>
                   </v-row>
@@ -669,7 +669,7 @@
             Thông báo
           </v-card-title>
           <v-card-text class="font-weight-regular"
-            >Báo cáo vẫn chưa được lưu. Bạn có muốn thoát?</v-card-text
+            >Bạn có muốn thoát?</v-card-text
           >
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -769,7 +769,7 @@ export default {
         doc.save(filename);
       });
     },
-    huy() {
+    thoat() {
       if (
         document.getElementById("hoten").value != "" ||
         document.getElementById("vitri").value != "" ||
