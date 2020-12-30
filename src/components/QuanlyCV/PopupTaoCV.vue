@@ -628,29 +628,29 @@
                       </v-row>
                     </v-card-text>
                   </v-row>
-                  <v-row align="center">
-                    <v-col class="d-flex" cols="12" sm="6">
-                      <v-select
-                        :items="itemsvb"
-                        label="Loại văn bản lưu"
-                        outlined
-                      ></v-select>
-                    </v-col>
-                  </v-row>
-                  <v-row align="center" justify="space-around">
-                    <v-btn
-                      depressed
-                      color="#D5E8D4"
-                      @click="(dialog = false), downloadWithCSS()"
-                    >
-                      Lưu
-                    </v-btn>
-                    <v-btn depressed color="#FF0000" @click="(dialog3 = true)">
-                      Hủy
-                    </v-btn>
-                  </v-row>
                 </v-container>
               </div>
+              <v-row align="center" style="margin-left:50px">
+                <v-col class="d-flex" cols="12" sm="6">
+                  <v-select
+                    :items="itemsvb"
+                    label="Loại văn bản lưu"
+                    outlined
+                  ></v-select>
+                </v-col>
+              </v-row>
+              <v-row align="center" justify="space-around">
+                <v-btn
+                  depressed
+                  color="#D5E8D4"
+                  @click="(dialog = false), downloadWithCSS()"
+                >
+                  Lưu
+                </v-btn>
+                <v-btn depressed color="#FF0000" @click="dialog3 = true">
+                  Hủy
+                </v-btn>
+              </v-row>
             </template>
             <div ref="content">
               <v-form> </v-form>
@@ -679,7 +679,7 @@
             <v-btn
               color="#1976d2"
               text
-              @click="(dialog3 = false), (dialog = false)"
+              @click="(dialog3 = false), (dialog = false), reload()"
             >
               OK
             </v-btn>
@@ -758,7 +758,7 @@ export default {
         doc.addImage(img, "JPEG", 500, 40);
         const date = new Date();
         const filename =
-          "timechart_" +
+          "New_CV" +
           date.getFullYear() +
           ("0" + (date.getMonth() + 1)).slice(-2) +
           ("0" + date.getDate()).slice(-2) +
@@ -768,6 +768,9 @@ export default {
           ".pdf";
         doc.save(filename);
       });
+    },
+    reload(){
+      location.reload();
     },
     thoat() {
       if (
