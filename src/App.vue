@@ -4,6 +4,7 @@
     <div class="div">
       <Header />
     </div>
+  
     <router-view></router-view>
     <Footer />
   </v-app>
@@ -12,6 +13,7 @@
 <script>
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+
 export default {
   data: () => ({
     step: 1,
@@ -21,8 +23,9 @@ export default {
   },
   components: {
     Footer,
-    Header,
+    Header
   },
 };
+
 </script>
 
