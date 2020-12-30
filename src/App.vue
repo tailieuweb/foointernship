@@ -4,9 +4,9 @@
     <div class="div">
       <Header />
     </div>
-    <!-- <dir>
+    <dir>
       <ManageBieuMau />
-    </dir> -->
+    </dir>
     <router-view></router-view>
     <Footer />
   </v-app>
@@ -15,7 +15,7 @@
 <script>
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-// import ManageBieuMau from "./components/QuanLyBieuMau/ManageBieuMau"
+import ManageBieuMau from "./components/QuanLyBieuMau/ManageBieuMau"
 export default {
   data: () => ({
     step: 1,
@@ -26,7 +26,7 @@ export default {
   components: {
     Footer,
     Header,
-    // ManageBieuMau,
+    ManageBieuMau,
   },
 };
 </script>
