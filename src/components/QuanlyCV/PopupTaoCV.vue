@@ -37,7 +37,6 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-
                       <image-uploader
                         :preview="true"
                         :className="[
@@ -646,18 +645,15 @@
                     >
                       Lưu
                     </v-btn>
-                    <v-btn depressed color="#FF0000" @click="dialog=false">
+                    <v-btn depressed color="#FF0000" @click="dialog = false">
                       Hủy
                     </v-btn>
                   </v-row>
-                  
                 </v-container>
               </div>
             </template>
             <div ref="content">
-              <v-form>
-                
-              </v-form>
+              <v-form> </v-form>
               <!-- Provides the application the proper gutter -->
               <v-container fluid>
                 <!-- If using vue-router -->
@@ -692,11 +688,10 @@
       </v-dialog>
     </v-row>
   </v-app>
-
 </template>
 
 <script>
-import jsPDF from 'jspdf' 
+import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 export default {
   name: "header",
@@ -751,33 +746,29 @@ export default {
       console.log("Exif", output.exif);
     },
     downloadWithCSS() {
-
-   /** WITH CSS */
-    domtoimage
-    .toPng(this.$refs.pdf)
-    .then(function(dataUrl) {
-      var img = new Image();
-      img.src = dataUrl;
-      const doc = new jsPDF({
-        orientation: "portrait",
-        // unit: "pt",
-        format: [1200, 1600]
+      /** WITH CSS */
+      domtoimage.toPng(this.$refs.pdf).then(function(dataUrl) {
+        var img = new Image();
+        img.src = dataUrl;
+        const doc = new jsPDF({
+          orientation: "portrait",
+          // unit: "pt",
+          format: [1200, 1600],
+        });
+        doc.addImage(img, "JPEG", 500, 40);
+        const date = new Date();
+        const filename =
+          "timechart_" +
+          date.getFullYear() +
+          ("0" + (date.getMonth() + 1)).slice(-2) +
+          ("0" + date.getDate()).slice(-2) +
+          ("0" + date.getHours()).slice(-2) +
+          ("0" + date.getMinutes()).slice(-2) +
+          ("0" + date.getSeconds()).slice(-2) +
+          ".pdf";
+        doc.save(filename);
       });
-      doc.addImage(img, "JPEG", 40, 40);
-      const date = new Date();
-      const filename =
-        "timechart_" +
-        date.getFullYear() +
-        ("0" + (date.getMonth() + 1)).slice(-2) +
-        ("0" + date.getDate()).slice(-2) +
-        ("0" + date.getHours()).slice(-2) +
-        ("0" + date.getMinutes()).slice(-2) +
-        ("0" + date.getSeconds()).slice(-2) +
-        ".pdf";
-      doc.save(filename);
-    })
-   
- },
+    },
     huy() {
       if (
         document.getElementById("hoten").value != "" ||
