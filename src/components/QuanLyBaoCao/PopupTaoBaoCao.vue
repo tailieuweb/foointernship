@@ -35,8 +35,9 @@
 
           <!-- Sizes your content based upon application components -->
           <v-main>
-            <v-form>
-              <v-container
+            <template>
+              <div ref="content">
+                 <v-container
                 style="
                   padding-left: 50px;
                   padding-right: 50px;
@@ -634,8 +635,11 @@
                   </v-card-text> </v-row
                 ><br />
 
-                <v-row align="center">
-                  <v-col class="d-flex" cols="12" sm="6">
+                
+              </v-container>
+              </div>
+              <v-row align="center">
+                  <v-col class="d-flex" cols="12" sm="6" style="margin-left: 50px">
                     <v-select
                       :items="itemsvb"
                       label="Chọn loại văn bản lưu"
@@ -644,12 +648,13 @@
                   </v-col> </v-row
                 ><br /><br />
                 <v-row align="center" justify="space-around">
+                  
                   <v-btn
                     depressed
                     :disabled="dialog2"
                     color="#D5E8D4"
                     style="width: 100px; height: 28px"
-                    @click="(dialog = false), createPDF()"
+                    @click="(dialog = false), downloadWithCSS()"
                   >
                     Lưu
                   </v-btn>
@@ -662,7 +667,9 @@
                     >Hủy</v-btn
                   > </v-row
                 ><br /><br />
-              </v-container>
+            </template>
+            <v-form>
+             
             </v-form>
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
@@ -715,6 +722,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+import jsPDF from 'jspdf' 
+import domtoimage from "dom-to-image";
+
 export default {
   data() {
     return {
@@ -753,7 +763,34 @@ export default {
     save(date) {
       this.$refs.menu.save(date);
     },
+    downloadWithCSS() {
 
+   /** WITH CSS */
+    domtoimage
+    .toPng(this.$refs.content)
+    .then(function(dataUrl) {
+      var img = new Image();
+      img.src = dataUrl;
+      const doc = new jsPDF({
+        orientation: "portrait",
+        // unit: "pt",
+        format: [900, 2000]
+      });
+      doc.addImage(img, "JPEG", 320, 40);
+      const date = new Date();
+      const filename =
+        "BaoCaoThucTap_" +
+        date.getFullYear() +
+        ("0" + (date.getMonth() + 1)).slice(-2) +
+        ("0" + date.getDate()).slice(-2) +
+        ("0" + date.getHours()).slice(-2) +
+        ("0" + date.getMinutes()).slice(-2) +
+        ("0" + date.getSeconds()).slice(-2) +
+        ".pdf";
+      doc.save(filename);
+    })
+    
+ },
     huy() {
       if (
         document.getElementById("tendn2").value != "" ||
@@ -785,63 +822,63 @@ export default {
       location.reload();
     },
 
-    createPDF() {
-      if (document.getElementById("tendn1").value == "") {
-        alert("Không được để trống");
-      } else {
-        var doc = new jsPDF();
+    // createPDF() {
+    //   if (document.getElementById("tendn1").value == "") {
+    //     alert("Không được để trống");
+    //   } else {
+    //     var doc = new jsPDF();
 
-        doc.setFontType("bold");
-        doc.setFontSize(21);
-        doc.text(55, 20, "BAO CAO KET QUA THUC TAP");
+    //     doc.setFontType("bold");
+    //     doc.setFontSize(21);
+    //     doc.text(55, 20, "BAO CAO KET QUA THUC TAP");
 
-        doc.setFontSize(16);
-        doc.setFontType("normal");
-        doc.text(20, 50, "Ten doanh nghiep:");
-        doc.setFontType("italic");
-        doc.text(document.getElementById("tendn2").value, 90, 50);
-        doc.setFontType("normal");
-        doc.text(20, 60, "Dia chi:");
-        doc.setFontType("italic");
-        doc.text(document.getElementById("diachi").value, 90, 60);
-        doc.setFontType("normal");
-        doc.text(20, 70, "Ngay:");
-        doc.setFontType("italic");
-        doc.text(document.getElementById("ngay").value, 90, 70);
-        doc.setFontType("normal");
-        doc.text(20, 80, "Thuc tap:");
-        doc.setFontType("italic");
-        doc.text(document.getElementById("thuctap").value, 90, 80);
+    //     doc.setFontSize(16);
+    //     doc.setFontType("normal");
+    //     doc.text(20, 50, "Ten doanh nghiep:");
+    //     doc.setFontType("italic");
+    //     doc.text(document.getElementById("tendn2").value, 90, 50);
+    //     doc.setFontType("normal");
+    //     doc.text(20, 60, "Dia chi:");
+    //     doc.setFontType("italic");
+    //     doc.text(document.getElementById("diachi").value, 90, 60);
+    //     doc.setFontType("normal");
+    //     doc.text(20, 70, "Ngay:");
+    //     doc.setFontType("italic");
+    //     doc.text(document.getElementById("ngay").value, 90, 70);
+    //     doc.setFontType("normal");
+    //     doc.text(20, 80, "Thuc tap:");
+    //     doc.setFontType("italic");
+    //     doc.text(document.getElementById("thuctap").value, 90, 80);
 
-        doc.setFontType("normal");
-        doc.text(20, 100, "GVHD:");
-        doc.text(document.getElementById("gvhd").value, 50, 100);
-        doc.text(20, 110, "HSSV:");
-        doc.text(document.getElementById("hssv").value, 50, 110);
-        doc.text(20, 120, "Lop:");
-        doc.text(document.getElementById("lop").value, 50, 120);
-        doc.text(110, 110, "MS HSSV:");
-        doc.text(document.getElementById("mssv").value, 145, 110);
-        doc.text(110, 120, "Khóa:");
-        doc.text(document.getElementById("khoa").value, 145, 120);
-        // doc.setFontSize(18);
-        // doc.setFontType("bold");
-        // doc.text(87, 160, 'Loi mo dau');
-        // doc.setFontType("normal");
-        // doc.setFontSize(15);
-        // doc.text(document.getElementById("loimodau").value, 20, 170);
+    //     doc.setFontType("normal");
+    //     doc.text(20, 100, "GVHD:");
+    //     doc.text(document.getElementById("gvhd").value, 50, 100);
+    //     doc.text(20, 110, "HSSV:");
+    //     doc.text(document.getElementById("hssv").value, 50, 110);
+    //     doc.text(20, 120, "Lop:");
+    //     doc.text(document.getElementById("lop").value, 50, 120);
+    //     doc.text(110, 110, "MS HSSV:");
+    //     doc.text(document.getElementById("mssv").value, 145, 110);
+    //     doc.text(110, 120, "Khóa:");
+    //     doc.text(document.getElementById("khoa").value, 145, 120);
+    //     // doc.setFontSize(18);
+    //     // doc.setFontType("bold");
+    //     // doc.text(87, 160, 'Loi mo dau');
+    //     // doc.setFontType("normal");
+    //     // doc.setFontSize(15);
+    //     // doc.text(document.getElementById("loimodau").value, 20, 170);
 
-        // doc.setFontSize(18);
-        // doc.setFontType("bold");
-        // doc.text(65, 250, 'Chuong 1: Noi dung thuc tap');
-        // doc.setFontSize(15);
-        // doc.text(20, 260, '1.1. Mo ta quy trinh thuc tap va cong viec thuc te noi dang thuc tap');
-        // doc.setFontSize(15);
-        // doc.text(20, 270, '1.1.1. Quy trinh thuc tap');
+    //     // doc.setFontSize(18);
+    //     // doc.setFontType("bold");
+    //     // doc.text(65, 250, 'Chuong 1: Noi dung thuc tap');
+    //     // doc.setFontSize(15);
+    //     // doc.text(20, 260, '1.1. Mo ta quy trinh thuc tap va cong viec thuc te noi dang thuc tap');
+    //     // doc.setFontSize(15);
+    //     // doc.text(20, 270, '1.1.1. Quy trinh thuc tap');
 
-        doc.save("BaoCaoThucTap.pdf");
-      }
-    },
+    //     doc.save("BaoCaoThucTap.pdf");
+    //   }
+    // },
   },
   //     huhu(){
   //       var doc = new jsPDF();
