@@ -12,7 +12,7 @@
         :items="desserts"
         :search="search"
         sort-by="calories"
-        class="elevation-1"
+        class="elevation-3 pt-3"
         hide-default-footer
         :page.sync="page"
         @page-count="pageCount = $event"
@@ -22,10 +22,9 @@
           <v-toolbar
             flat
           >
-
             <v-col
-            md="5"
-            sm="5">
+            md="4"
+            sm="4">
              <v-card>
               <v-text-field
                 v-model="search"
@@ -49,7 +48,7 @@
                 class="mt-6"
               ></v-select>
             </v-col>
-
+            
             <v-spacer></v-spacer>
             <v-dialog
               v-model="dialog"
@@ -273,6 +272,38 @@
               </v-card>
             </v-dialog>
           </v-toolbar>
+            
+          <v-row
+          class="px-4 ma-0 mt-3">
+            <v-col
+              md="4"
+              sm="4">
+                <v-file-input
+                  accept=".xls,.xlsx"
+                  label="Chọn file"
+                  id="input_file"
+                  @change="onChange"
+                  class="pa-0"
+                ></v-file-input>
+              </v-col>
+
+              <v-col
+              md="2"
+              sm="2">
+                <v-btn
+                  color="primary"
+                  class="btn-insert"
+                  @click="convertJson">
+                    Import
+                </v-btn>
+            </v-col>
+            <v-spacer>
+            </v-spacer>
+            <v-btn
+            color="primary">
+              Lưu
+            </v-btn>
+          </v-row>
         </template>
         <template v-slot:item.actions="{ item }">
           <v-icon
@@ -321,6 +352,12 @@
       modalEnd: false,
       magv: [],
       search: '',
+      selectedFile: {},
+      dataa: [{
+        "name":"jayanth",
+        "data":"scd",
+        "abc":"sdef"
+      }],
       headers: [
         {
           text: 'ID',
@@ -435,6 +472,33 @@
         }
         this.close()
       },
+      onChange(event){
+        this.selectedFile = event;
+      },
+      convertJson(){
+        
+      XLSX.utils.json_to_sheet(this.dataa, 'out.xlsx');
+          if(this.selectedFile){
+              let fileReader = new FileReader();
+              fileReader.readAsBinaryString(this.selectedFile);
+              fileReader.onload = (event)=>{
+              let dataaa = event.target.result;
+              let workbook = XLSX.read(dataaa,{type:"binary"});
+              console.log(workbook);
+              workbook.SheetNames.forEach(sheet => {
+                    let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                    console.log( JSON.stringify(rowObject,undefined,4))
+                    this.desserts = rowObject;
+              });
+              }
+          }
+      }
     },
   }
 </script>
+
+<style>
+.v-data-table__wrapper{
+  padding-top: 1%;
+}
+</style>
