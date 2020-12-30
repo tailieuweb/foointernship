@@ -300,7 +300,14 @@
             <v-spacer>
             </v-spacer>
             <v-btn
-            color="primary">
+              color="error"
+              class="mr-2"
+              @click="cancelImport">
+              Hủy
+            </v-btn>
+            <v-btn
+              color="primary"
+              @click="importExcel">
               Lưu
             </v-btn>
           </v-row>
@@ -476,8 +483,7 @@
         this.selectedFile = event;
       },
       convertJson(){
-        
-      XLSX.utils.json_to_sheet(this.dataa, 'out.xlsx');
+        XLSX.utils.json_to_sheet(this.dataa, 'out.xlsx');
           if(this.selectedFile){
               let fileReader = new FileReader();
               fileReader.readAsBinaryString(this.selectedFile);
@@ -492,6 +498,25 @@
               });
               }
           }
+      },
+      importExcel() {
+
+        for(let i = 0; i < this.desserts.length; i++) {
+            let obj = this.desserts[i];
+            this.editedItem.codeClass = obj.codeClass
+            this.editedItem.nameTopic = obj.nameTopic
+            this.editedItem.course = obj.course
+            this.editedItem.year = obj.year
+            this.editedItem.dateStart = obj.dateStart
+            this.editedItem.dateEnd = obj.dateEnd
+            this.editedItem.codeTeacher = obj.codeTeacher
+            this.axios.post(this.url,this.editedItem).then((response)=>{
+              this.initialize()
+            });
+        }
+      },
+      cancelImport(){
+        this.initialize();
       }
     },
   }
