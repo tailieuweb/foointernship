@@ -1,22 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ListGV from '../components/DanhSachGiangVien/ListGV'
-import VueAxios from 'vue-axios';
-import axios from 'axios';
-Vue.use(VueAxios,axios);
-
 Vue.use(Router)
 
-const routes = [
-  {
-    path: '/',
-    name: 'ListGV',
-    component: ListGV
-  },
+let baseRoutes = [
+ 
 ]
 
 const router = new Router({
-  routes
+  mode: 'history',
+  linkExactActiveClass: 'active',
+  base: process.env.BASE_URL,
+  routes: baseRoutes
 })
 
 export default router
