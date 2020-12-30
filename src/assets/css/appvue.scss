@@ -1,0 +1,17 @@
+//colors
+$color_sunset_orange_approx: #ef4f4f;
+$cornflower_blue: cornflowerblue;
+$color_mine_shaft_approx: #3c3c3c;
+
+.v-data-table__wrapper {
+	padding-top: 5%;
+}
+.v-data-table-header {
+	background: $cornflower_blue;
+}
+.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+	background: $color_sunset_orange_approx !important;
+}
+.v-application a {
+	color: $color_mine_shaft_approx !important;
+}
