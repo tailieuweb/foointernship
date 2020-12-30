@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ListKhoa from '../components/khoa/ListKhoa'
+import ListKhoa from '../components/khoa/ListKhoa.vue'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+
 Vue.use(VueAxios,axios);
 
 Vue.use(Router)
