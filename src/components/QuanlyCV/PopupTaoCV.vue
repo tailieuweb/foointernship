@@ -91,6 +91,7 @@
           <v-col cols="12" sm="6" md="6"
           >
             <v-text-field
+            id="hoten"
             style="font-size:19px;font-weight:bold;"
              outlined
               label="Họ tên"
@@ -743,14 +744,14 @@
       <v-btn
         depressed
         color="#D5E8D4"
-      @click="download"
+      @click="dialog = false, download()"
       >
         Lưu
       </v-btn>
       <v-btn
         depressed
         color="#FF0000"
-        @click="dialog3 = !dialog3"
+        @click="huy()"
       >
         Hủy
       </v-btn>
@@ -849,7 +850,15 @@ import jsPDF from 'jspdf'
     doc.text("Create CV", 10, 10);
     doc.save(pdfName + '.pdf');
       },
+      huy(){
+      if( document.getElementById("hoten").value != ""){
+        this.dialog3 = true;
     }
+    else{
+      this.dialog = false;
+    }
+    },
+  }
   }
 </script>
 
