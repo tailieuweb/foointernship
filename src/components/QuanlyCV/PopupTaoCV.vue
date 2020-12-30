@@ -32,11 +32,12 @@
 
           <!-- Sizes your content based upon application components -->
           <v-main>
-            <div ref="content">
-              <v-form>
+            <template>
+              <div ref="pdf">
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
+
                       <image-uploader
                         :preview="true"
                         :className="[
@@ -69,9 +70,9 @@
                             </svg>
                             <p>Chọn ảnh CV</p>
                           </figure>
-                          <span class="upload-caption">{{
+                          <!-- <span class="upload-caption">{{
                             hasImage ? "" : ""
-                          }}</span>
+                          }}</span> -->
                         </label>
                       </image-uploader>
                     </v-col>
@@ -641,15 +642,21 @@
                     <v-btn
                       depressed
                       color="#D5E8D4"
-                      @click="(dialog = false), download()"
+                      @click="(dialog = false), downloadWithCSS()"
                     >
                       Lưu
                     </v-btn>
-                    <v-btn depressed color="#FF0000" @click="huy()">
+                    <v-btn depressed color="#FF0000" @click="dialog=false">
                       Hủy
                     </v-btn>
                   </v-row>
+                  
                 </v-container>
+              </div>
+            </template>
+            <div ref="content">
+              <v-form>
+                
               </v-form>
               <!-- Provides the application the proper gutter -->
               <v-container fluid>
@@ -685,10 +692,12 @@
       </v-dialog>
     </v-row>
   </v-app>
+
 </template>
 
 <script>
-import jsPDF from "jspdf";
+import jsPDF from 'jspdf' 
+import domtoimage from "dom-to-image";
 export default {
   name: "header",
   date: null,
@@ -741,15 +750,34 @@ export default {
       console.log("Info", output.info);
       console.log("Exif", output.exif);
     },
-    download() {
-      let pdfName = "CV";
-      var doc = new jsPDF();
-      doc.text("Tao CV",90, 10);
-      doc.text("Ho ten: ",20,20);
-      doc.text("Vi tri chuc vu: ",20,40);
-      doc.text("Phone: ",20,60);
-      doc.save(pdfName + ".pdf");
-    },
+    downloadWithCSS() {
+
+   /** WITH CSS */
+    domtoimage
+    .toPng(this.$refs.pdf)
+    .then(function(dataUrl) {
+      var img = new Image();
+      img.src = dataUrl;
+      const doc = new jsPDF({
+        orientation: "portrait",
+        // unit: "pt",
+        format: [1200, 1600]
+      });
+      doc.addImage(img, "JPEG", 40, 40);
+      const date = new Date();
+      const filename =
+        "timechart_" +
+        date.getFullYear() +
+        ("0" + (date.getMonth() + 1)).slice(-2) +
+        ("0" + date.getDate()).slice(-2) +
+        ("0" + date.getHours()).slice(-2) +
+        ("0" + date.getMinutes()).slice(-2) +
+        ("0" + date.getSeconds()).slice(-2) +
+        ".pdf";
+      doc.save(filename);
+    })
+   
+ },
     huy() {
       if (
         document.getElementById("hoten").value != "" ||
@@ -832,7 +860,7 @@ export default {
   display: none;
 }
 img {
-  width: 300px;
-  height: 350px;
+  width: 290px;
+  height: 330px;
 }
 </style>
