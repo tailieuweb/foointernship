@@ -417,4 +417,7 @@ else{
 .theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
   background-color: blue !important;
 }
+.v-application .text-center {
+    margin-bottom: 30px;
+}
 </style>
