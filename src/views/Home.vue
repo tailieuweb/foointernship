@@ -1,38 +1,13 @@
 <template>
-  <v-app>
-    <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row cols="12" sm="8" md="8">
-          <v-card class="elevation-12">
-            <v-window v-model="step">
-              <v-window-item :value="1"> 
-                  <v-row>
-                      <v-col cols="12" md="8">
-                          <v-card-text class="mt-12">
-                              <h1 class="text-center display-2 teal--text text--accent-3"></h1>
-                          </v-card-text>
-                      </v-col>
-                  </v-row>
-              </v-window-item>
-              <v-window-item :value="2">
-                   
-                </v-window-item>
-            </v-window>
-          </v-card>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <layout-default>
+    <list-students/>
+  </layout-default>
 </template>
 
 <script>
+import ListStudents from '../components/DanhSachSinhVien/ListStudents.vue';
 export default {
-  data: () => ({
-    step: 1,
-  }),
-  props: {
-    source: String,
-  },
+  components: { ListStudents },
 };
 </script>
 

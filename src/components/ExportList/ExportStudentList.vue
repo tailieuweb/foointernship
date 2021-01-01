@@ -4,7 +4,7 @@
       <b class="mr-4">{{ numberofStudents }}</b>
       <label> Sinh viên</label>
       <v-spacer />
-      <b class="mr-2">10</b>
+      <b class="mr-2">{{ numberofCompanies }}</b>
       <label> Công ty</label>
       <div class="row">
         <div class="col-xs-12 col-sm-4">
@@ -74,6 +74,8 @@
 <script>
 const RESOURCE_STUDENT =
   "https://5fc9e4df3c1c22001644136d.mockapi.io/api/internship/students";
+const RESOURCE_COMPANY =
+  "https://5fc9e4df3c1c22001644136d.mockapi.io/api/internship/companies";
 export default {
   data: () => ({
     page: 1,
@@ -98,6 +100,7 @@ export default {
       { text: "NGƯỜI HƯỚNG DẪN TẠI CÔNG TY (KÈM SDT)", value: "company" },
     ],
     students: [],
+    companies: [],
     filters: {
       class: [],
       company: [],
@@ -129,6 +132,9 @@ export default {
     numberofStudents() {
       return this.students.length;
     },
+    numberofCompanies() {
+      return this.companies.length;
+    },
   },
 
   watch: {
@@ -142,12 +148,18 @@ export default {
 
   created() {
     this.list_students();
+    this.list_companies();
   },
 
   methods: {
     list_students() {
       this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
         this.students = response.data;
+      });
+    },
+    list_companies() {
+      this.axios.get(`${RESOURCE_COMPANY}`).then((response) => {
+        this.companies = response.data;
       });
     },
     columnValueList(val) {

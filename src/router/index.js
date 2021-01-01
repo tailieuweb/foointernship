@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ListStudents from '../components/DanhSachSinhVien/ListStudents'
-import ExportStudentList from '../components/ExportList/ExportStudentList'
+import Home from '../views/Home'
+import DanhSachSinhVien from '../views/DanhSachSinhVien'
+import ExportDanhSachSinhVien from '../views/ExportDanhSachSinhVien'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use(VueAxios,axios);
@@ -10,14 +11,19 @@ Vue.use(Router)
 
 const routes = [
   {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
     path: '/ListStudents',
     name: 'ListStudents',
-    component: ListStudents
+    component: DanhSachSinhVien
   },
   {
     path: '/ExportStudents',
     name: 'ExportStudents',
-    component: ExportStudentList
+    component: ExportDanhSachSinhVien
   }
   ,
   {
@@ -27,6 +33,8 @@ const routes = [
 ]
 
 const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 

@@ -319,6 +319,7 @@ export default {
           console.log(this.editedItem.id);
         });
       this.students.splice(this.editedIndex, 1);
+      setTimeout(this.list_students, 500);
       this.closeDelete();
     },
 
@@ -358,10 +359,10 @@ export default {
       } else {
         this.axios
           .post(`${RESOURCE_STUDENT}`, this.editedItem)
-          .then(function (response) {
+          .then(function(response) {
             console.log(response);
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
           });
         setTimeout(this.list_students, 500);
