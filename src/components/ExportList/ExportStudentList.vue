@@ -105,7 +105,7 @@ export default {
       class: [],
       company: [],
     },
-    file: ["Excel", "PDF"],
+    file: ["Excel"],
     json_fields: {
       STT: "index",
       MSSV: "id",
