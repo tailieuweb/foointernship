@@ -7,7 +7,7 @@
             max-height="100"
             max-width="100"
           ></v-img>
-          <v-btn rounded color="blue" dark class="haha"><router-link to="/">Home</router-link> </v-btn>
+          <v-btn rounded color="blue" dark><router-link to="/">Home</router-link> </v-btn>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
           <b-collapse id="nav-collapse" is-nav>
