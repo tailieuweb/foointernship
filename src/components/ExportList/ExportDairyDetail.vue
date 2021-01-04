@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <v-container>
-       <v-row>
+      <v-row>
       <v-col md="6">
         TRƯỜNG CAO ĐẲNG CÔNG NGHỆ THỦ ĐỨC <br />
         KHOA CÔNG NGHỆ THÔNG TIN
@@ -26,10 +25,11 @@
       <v-col md="3"> </v-col><br />
       <v-col md="0"> Giảng viên:..... </v-col> </v-row
     ><br />
+    <v-container>
       <b class="mr-4">{{ numberofStudents }}</b>
-      <label>Nhat Ki</label>
+      <label> Sinh viên</label>
       <v-spacer />
-      <b class="mr-2">10</b>
+      <b class="mr-2">{{ numberofCompanies }}</b>
       <label> Công ty</label>
       <div class="row">
         <div class="col-xs-12 col-sm-4">
@@ -65,10 +65,10 @@
             <v-btn color="primary" dark class="mb-2 mr-5 w-150">
               <download-excel
                 class="btn btn-default"
-                :data="filteredDairyDetailListsWithIndex"
+                :data="filteredStudentsWithIndex"
                 :fields="json_fields"
                 worksheet="My Worksheet"
-                name="nhatkithuctap.xls"
+                name="listStudents.xls"
               >
                 Export
               </download-excel>
@@ -78,7 +78,7 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="filteredStudentsWithIndex"
         sort-by="id"
         class="elevation-1"
         :page.sync="page"
@@ -99,13 +99,15 @@
 <script>
 const RESOURCE_STUDENT =
   "https://5fc9e4df3c1c22001644136d.mockapi.io/api/internship/students";
+const RESOURCE_COMPANY =
+  "https://5fc9e4df3c1c22001644136d.mockapi.io/api/internship/companies";
 export default {
   data: () => ({
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
     headers: [
-      {
+     {
         text: "STT",
         value: "index",
       },
@@ -123,18 +125,19 @@ export default {
       { text: "Nội Dung Nhật kí", value: "company" },
     ],
     students: [],
+    companies: [],
     filters: {
       class: [],
       company: [],
     },
-    file: ["Excel", "PDF"],
+    file: ["Excel"],
     json_fields: {
-      STT: "index",
-      TieuDe: "id",
-      "TrangThai": "name",
+      SSTT: "index",
+       "Tiêu Đề": "id",
+      "Trạng Thái": "name",
      "Thời Gian Bắt Đầu": "class",
-      "Thời Gian Kết Thúc": "company",
-      "Nội Dung Nhật kí": "company",
+     "Thời Gian Kết Thúc": "company",
+     "Nội Dung Nhật kí": "company",
     },
   }),
   computed: {
@@ -154,8 +157,10 @@ export default {
     numberofStudents() {
       return this.students.length;
     },
+    numberofCompanies() {
+      return this.companies.length;
+    },
   },
-
   watch: {
     dialog(val) {
       val || this.close();
@@ -164,15 +169,19 @@ export default {
       val || this.closeDelete();
     },
   },
-
   created() {
     this.list_students();
+    this.list_companies();
   },
-
   methods: {
     list_students() {
       this.axios.get(`${RESOURCE_STUDENT}`).then((response) => {
         this.students = response.data;
+      });
+    },
+    list_companies() {
+      this.axios.get(`${RESOURCE_COMPANY}`).then((response) => {
+        this.companies = response.data;
       });
     },
     columnValueList(val) {

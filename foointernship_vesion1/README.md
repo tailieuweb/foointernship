@@ -1,3 +1,0 @@
-# foointernship
-clien/lvtuyen
-
