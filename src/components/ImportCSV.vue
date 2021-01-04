@@ -13,7 +13,7 @@
         ></v-progress-circular>
       </v-flex>
     </v-layout>
-    <v-layout row wrap class="mt-2" v-else>
+    <v-layout row wrap class="mt-2">
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
           <v-card-title>
@@ -114,14 +114,14 @@
 </template>
 
 <script>
-const RESOURCE_STUDENT =
-  "https://5fcd0eb2603c0c0016487546.mockapi.io/api/users";
+const RESOURCE_STUDENT = "https://5fcd0eb2603c0c0016487546.mockapi.io/api/list";
 export default {
   data() {
     return {
       contacts: [],
       page: 1,
       pageCount: 0,
+      editedIndex: -1,
       itemsPerPage: 10,
       headers: [
         {
@@ -196,17 +196,13 @@ export default {
       var lines = csv.split("\n");
       var result = [];
       var headers = lines[0].split(",");
-
       lines.map((line, indexLine) => {
-        if (indexLine < 1) return; // Jump header line
-
+        if (indexLine < 1) return;
         const obj = {};
         var currentline = line.split(",");
-
         headers.map((header, indexHeader) => {
           obj[header.trim()] = currentline[indexHeader];
         });
-
         result.push(obj);
       });
       result.pop();
@@ -224,15 +220,15 @@ export default {
 
       if (window.FileReader) {
         let reader = new FileReader();
+        // when the file is read it triggers the onload event above.
         reader.readAsText(file, "UTF-8");
         reader.onload = function() {
           let csv = reader.result;
           vm.contacts = vm.csvJSON(csv);
         };
-
         reader.onerror = function(evt) {
           if (evt.target.error.name == "NotReadableError") {
-            alert("Canno't read file !");
+            alert("Cannot't read file !");
           }
         };
       } else {
@@ -241,24 +237,14 @@ export default {
     },
     save() {
       let self = this;
-      if (self.editedIndex > -1) {
-        Object.assign(this.students[this.editedIndex], this.editedItem);
-        this.axios
-          .put(RESOURCE_STUDENT + "/" + this.editedItem.id, this.editedItem)
-          .catch((error) => {
-            console.log(error.response);
-          });
-      } else {
-        this.axios
-          .post(`${RESOURCE_STUDENT}`, self.editedItem)
-          .then(function(response) {
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-      this.close();
+      this.axios
+        .post(`${RESOURCE_STUDENT}`, self.contacts)
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
   },
 };
