@@ -1,0 +1,2 @@
+npm install @fortawesome/fontawesome-free
+npm i bootstrap-vue
